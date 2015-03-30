@@ -2,19 +2,19 @@ var app = angular.module('loginApp',['ngRoute']);
 app.config(['$routeProvider',function($routeProvider){
     $routeProvider.
         when('/login',{
-            templateUrl : 'users/login.html',
+            templateUrl : 'modules/users/login.html',
             controller : 'LoginController'
         })
         .when('/share', {
-            templateUrl: 'share/share.html',
+            templateUrl: 'modules/share/share.html',
             controller: 'ShareController'
         })
         .when('/signup',{
-            templateUrl : 'users/signup.html',
+            templateUrl : 'modules/users/signup.html',
             controller : 'SignupController'
         })
         .when('/iwanttoshare',{
-            templateUrl : 'share/iwanttoshare.html',
+            templateUrl : 'modules/share/iwanttoshare.html',
             controller : 'ShareController'
         })
         .otherwise({redirectTo:'/login'})
