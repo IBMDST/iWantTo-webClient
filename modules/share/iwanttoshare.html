@@ -1,0 +1,49 @@
+<div class="container">
+    <div class="row">
+        <!-- Article main content -->
+        <article class="col-sm-9 maincontent">
+            <header class="page-header">
+                <h1 class="page-title">I want to Share
+                    <a class="btn btn-primary pull-right" href="#/share">Back up</a>
+                </h1>
+            </header>
+            <p>
+                What you want to share? Fill out the form below with some info.
+            </p>
+            <br>
+            <form name="shareForm" role="form" novalidate>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label>Subject <span class="text-danger">*</span></label>
+                        <input  class="form-control" type="text" placeholder="Subject" name="subject" ng-model="share.subject" required focus>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label>Content <span class="text-danger">*</span></label>
+                        <textarea  placeholder="Type your content here..." ng-model="share.description"  class="form-control" name="description"  rows="9" required></textarea>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-sm-6">
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        <button type="submit" class="btn btn-warning" ng-click="iWantToShare(share)" ng-disabled="shareForm.$invalid">
+                            Submit
+                        </button>
+                    </div>
+                    {{iWantToShareFailtext}}
+                </div>
+            </form>
+        </article>
+
+        <aside class="col-sm-3 sidebar sidebar-right">
+            <div class="row widget pull-right">
+                <p><a href="" ng-click="logout()">Logout</a></p>
+            </div>
+
+        </aside>
+    </div>
+</div>

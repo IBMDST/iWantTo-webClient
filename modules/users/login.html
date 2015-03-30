@@ -1,0 +1,39 @@
+<div class="container">
+    <div class="row">
+        <article class="col-xs-12 maincontent">
+            <header class="page-header">
+                <h1 class="page-title">Sign in</h1>
+            </header>
+            <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h3 class="thin text-center">Sign in to your account</h3>
+                        <p class="text-center text-muted">Don't have an account? <a href="#/signup">Register Now</a></p>
+                        <hr>
+                        <form role="form" name="form1" novalidate>
+                            <div class="top-margin">
+                                <label>Username <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" placeholder="Enter name" ng-model="user.username" name="name" required focus>
+                                <small ng-show="form1.name.$invalid && !form1.name.$pristine" class="help-inline text-danger">Your name is required.</small>
+                            </div>
+                            <div class="top-margin">
+                                <label>Password <span class="text-danger">*</span></label>
+                                <input type="password" class="form-control" placeholder="Password" ng-model="user.password" name="password" required>
+                                <small ng-show="form1.password.$invalid && !form1.password.$pristine" class="help-inline text-danger">Your name is required.</small>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <span class="text-danger">{{loginError}}</span>
+                                </div>
+                                <div class="col-lg-4 text-right">
+                                    <button class="btn btn-warning" type="submit" ng-click="login(user)" ng-disabled="form1.$invalid">Sign in</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+</div>

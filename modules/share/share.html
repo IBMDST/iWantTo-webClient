@@ -1,0 +1,58 @@
+<!-- container -->
+<div class="container">
+    <div class="row">
+
+        <!-- Article main content -->
+        <article class="col-md-8 maincontent">
+            <header class="page-header">
+                <h1 class="page-title">Share Overview
+                    <a class="btn btn-primary pull-right" href="#/iwanttoshare">I want to Share</a>
+                </h1>
+
+                <p>Here is a place...</p>
+            </header>
+            <div ng-repeat="speech in speechesList">
+                <h3>{{speech.subject}}</h3>
+                <p>{{speech.description}}</p>
+
+                <div class="iwantto-queto">{{speech.createdOn | date:'medium'}} comes from {{speech.speakerID}}
+                    <div data-count="{{speech.votes.length}}" ng-click="speechInterest(speech.id)" class="vote-button pull-right" id = "{{speech.id}}"></div>
+                </div>
+                <div class="comment">
+                    <form role="form" name="commentForm" novalidate>
+                        <textarea placeholder="I'd like to say..." ng-model="comment"  class="form-control comment-textarea" name="comment" rows="2" required></textarea>
+                        <div class="col-sm-10">
+                        </div>
+                        <div class="col-sm-2">
+                            <button class="btn btn-warning btn-xs" type="submit" ng-click="submitComment(comment,speech.id)" ng-disabled="commentForm.$invalid">Comment</button>
+                        </div>
+                    </form>
+
+                    <div ng-repeat="comment in speech.comments track by $index">
+                        <p class="comment-font">{{comment.userID}} : {{comment.content}}<br>
+                            <span class="comment-time-font">
+                                {{comment.createdOn | date:'medium'}}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </article>
+        <!-- /Article -->
+
+        <!-- Sidebar -->
+        <aside class="col-md-4 sidebar sidebar-right">
+
+            <div class="row widget pull-right">
+                <div class="col-xs-12">
+                    <a  ng-click="logout()">Logout</a>
+                </div>
+            </div>
+
+        </aside>
+        <!-- /Sidebar -->
+
+    </div>
+</div>	<!-- /container -->
+
