@@ -20,6 +20,9 @@ app.factory('shareService',function($http,$location,sessionService){
         submitComment : function(data,scope) {
             var $promise = $http.post('http://share.in-sync.co:2403/speech-comments', data);
             $promise.then(function (success) {
+                $http.get('http://share.in-sync.co:2403/speeches').success(function(response){
+                     scope.speechesList = response;
+                });
                 $location.path('/share');
             }, function (error) {
                 scope.commitCommentFailtext = error.errors;
