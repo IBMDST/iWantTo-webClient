@@ -15,8 +15,8 @@
                 <h3>{{speech.subject}}</h3>
                 <p>{{speech.description}}</p>
 
-                <div class="iwantto-queto">{{speech.createdOn | date:'medium'}} comes from {{speech.speakerID}}
-                    <div data-count="{{speech.votes.length}}" ng-click="speechInterest(speech.id)" class="vote-button pull-right" id = "{{speech.id}}"></div>
+                <div class="iwantto-queto">{{speech.createdOn | date:'medium'}} comes from {{speech.speakerName}}
+                    <div data-count="{{speech.interests.length}}" ng-click="speechInterest(speech.id)" class="vote-button pull-right" id = "{{speech.id}}"></div>
                 </div>
                 <div class="comment">
                     <form role="form" name="commentForm" novalidate>
@@ -29,7 +29,7 @@
                     </form>
 
                     <div ng-repeat="comment in speech.comments track by $index">
-                        <p class="comment-font">{{comment.userID}} : {{comment.content}}<br>
+                        <p class="comment-font">{{comment.userName}} : {{comment.comment}}<br>
                             <span class="comment-time-font">
                                 {{comment.createdOn | date:'medium'}}
                             </span>
