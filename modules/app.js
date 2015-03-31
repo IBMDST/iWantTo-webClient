@@ -1,4 +1,5 @@
 var app = angular.module('loginApp',['ngRoute']);
+var rootUrl = 'http://share.in-sync.co:2403';
 app.config(['$routeProvider',function($routeProvider){
     $routeProvider.
         when('/login',{

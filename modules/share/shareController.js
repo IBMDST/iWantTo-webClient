@@ -23,6 +23,7 @@ app.controller('ShareController',['$scope','loginService','shareService','sessio
         shareService.iWantToShare(sendShareMessage,$scope);
     };
 
+
     $scope.submitComment = function(data,speechId){
         var sendCommentMessage =
         {

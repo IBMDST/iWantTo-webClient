@@ -4,7 +4,7 @@
 app.factory('loginService',function($http, $location, sessionService){
     return{
         login : function(data,scope){
-            var $promise = $http.post('http://share.in-sync.co:2403/users/login',data);
+            var $promise = $http.post(rootUrl + '/users/login',data);
             $promise.then(function(success){
                 var uid = success.data.uid;
                     sessionService.set('uid',uid);
@@ -43,7 +43,7 @@ app.factory('sessionService', ['$http', function($http){
             return sessionStorage.getItem(key);
         },
         destroy:function(key){
-            $http.post('http://share.in-sync.co:2403/users/logout');
+            $http.post(rootUrl + '/users/logout');
             return sessionStorage.removeItem(key);
         }
     };
@@ -52,7 +52,7 @@ app.factory('sessionService', ['$http', function($http){
 app.factory('signupService', function($http, $location,sessionService){
     return{
         signup : function(data,scope){
-            var $promise = $http.post('http://share.in-sync.co:2403/users',data);
+            var $promise = $http.post(rootUrl + '/users',data);
             $promise.then(function(success){
                 var uid = success.data.id;
                 sessionService.set('uid',uid);

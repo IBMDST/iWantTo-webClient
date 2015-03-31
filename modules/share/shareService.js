@@ -4,11 +4,11 @@
 app.factory('shareService',function($http,$location,sessionService){
     return {
         speeches : function(){
-            return $http.get('http://share.in-sync.co:2403/speeches');
+            return $http.get(rootUrl + '/speeches');
         },
 
         iWantToShare : function(data,scope){
-            var $promise = $http.post('http://share.in-sync.co:2403/speeches',data);
+            var $promise = $http.post(rootUrl + '/speeches',data);
             $promise.then(function(success){
                 $location.path('/share');
             },function(error){
@@ -18,8 +18,11 @@ app.factory('shareService',function($http,$location,sessionService){
         },
 
         submitComment : function(data,scope) {
-            var $promise = $http.post('http://share.in-sync.co:2403/speech-comments', data);
+            var $promise = $http.post(rootUrl + '/speech-comments', data);
             $promise.then(function (success) {
+                $http.get(rootUrl + '/speeches').success(function(response){
+                    scope.speechesList = response;
+                });
                 $location.path('/share');
             }, function (error) {
                 scope.commitCommentFailtext = error.errors;
@@ -28,7 +31,7 @@ app.factory('shareService',function($http,$location,sessionService){
         },
 
         addInterest : function(data,scope) {
-            var $promise = $http.post('http://share.in-sync.co:2403/speech-interested', data);
+            var $promise = $http.post(rootUrl + '/speech-interested', data);
             $promise.then(function (success) {
                 var speechID = success.data.speechID;
                 var sessionName = speechID + "Interest";
