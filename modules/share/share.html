@@ -15,8 +15,13 @@
                 <h3>{{speech.subject}}</h3>
                 <p>{{speech.description}}</p>
 
-                <div class="iwantto-queto">{{speech.createdOn | date:'medium'}} comes from <strong>{{speech.speakerName}}</strong>
-                    <div data-count="{{speech.interests.length}}" ng-click="speechInterest(speech.id)" class="vote-button pull-right" id = "{{speech.id}}"></div>
+                <div class="share-time">{{speech.createdOn | date:'medium'}} comes from <strong>{{speech.speakerName}}</strong>
+                    <div class="share-interest pull-right">
+                        <button class="btn btn-default btn-xs" aria-label="heart" type="submit" ng-click="swapInterest(speech.id)">
+                            <span id="{{speech.id}}" ng-class="{false : 'glyphicon glyphicon-heart-empty', true:'glyphicon glyphicon-heart'}[{{'interest'+speech.id}}]" aria-hidden="true"></span>
+                        </button>
+                        <span class="text-right">{{speech.interests.length}}</span>
+                    </div>
                 </div>
                 <div class="comment">
                     <form role="form" name="commentForm" novalidate>
