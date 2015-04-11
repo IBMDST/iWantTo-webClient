@@ -1,10 +1,11 @@
 /**
  * Created by wangqr on 3/27/2015.
  */
-app.controller('LoginController',  ['$scope','loginService',function ($scope,loginService) {
-
-    $scope.login = function(data){
-        loginService.login(data,$scope); //call login service
+app.controller('LoginController',  ['$scope','$rootScope','loginService',function ($scope,$rootScope,loginService) {
+    $rootScope.isLogged = loginService.islogged();
+    $scope.login = function(data)
+    {
+        loginService.login(data,$scope);
     };
 }]);
 

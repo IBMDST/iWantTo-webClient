@@ -1,0 +1,39 @@
+<div class="container">
+    <div class="row">
+        <!-- Article main content -->
+        <article class="col-sm-12 maincontent">
+            <header class="page-header">
+                <h1 class="page-title">Edit Speech
+                    <a class="btn btn-primary pull-right" href="#/mypublished">Back up</a>
+                </h1>
+            </header>
+            <p>
+                Here is a place.....
+            </p>
+            <br>
+            <form name="updateForm" role="form" novalidate>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label>subject<span class="text-danger">*</span></label>
+                        <input  class="form-control" type="text"  name="subject"  ng-model="update.subject"  required focus rc-initial>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label>Content <span class="text-danger">*</span></label>
+                        <textarea class="form-control" name="description"  rows="9" ng-model="update.description"  required></textarea>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-6 text-right">
+                        <button type="submit" class="btn btn-warning" ng-click="updateSpeech(update)" ng-disabled="updateForm.$invalid">
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </article>
+    </div>
+</div>

@@ -1,0 +1,49 @@
+<!-- container -->
+<div class="container">
+    <div class="row">
+
+        <!-- Article main content -->
+        <article class="col-md-12 maincontent">
+            <header class="page-header">
+                <h1 class="page-title">Share Information</h1>
+                <p>Here is a place...</p>
+            </header>
+
+            <h3>{{meetingInfo.subject}} </h3>
+            <p>
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Speaker Name : {{meetingInfo.speakerName}}<br>
+                <span class="glyphicon glyphicon-time" aria-hidden="true"></span> Meeting Time : {{meetingInfo.when}}  <br>
+                <span class="glyphicon glyphicon-home" aria-hidden="true"></span> Meeting Location : {{meetingInfo.where}}
+            </p>
+
+            <hr>
+            <div ng-if="isMeetingStart">
+                <h3>My feedback is</h3>
+                <div id="isFeedbacked">
+                    {{feedback.comment}}<br>
+                    <div class="isStared"></div>
+                    {{feedback.createdOn | date:'yyyy-MM-dd  HH:mm'}}
+                </div>
+                <form id="feedbackForm" name="feedbackForm" role="form" novalidate>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <textarea class="form-control" name="comment" rows="3" ng-model="comment"  required></textarea>
+                        </div>
+                    </div>
+                    <div class="row star-bar">
+                        <div id="star" class="col-sm-2"></div>
+                        <div class="col-sm-2 col-sm-offset-2 text-right">
+                            <button type="submit" class="btn btn-warning" ng-click="submitFeedback(comment)" ng-disabled="feedbackForm.$invalid">
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <hr>
+            </div>
+        </article>
+        <!-- /Article -->
+
+    </div>
+</div>	<!-- /container -->
+

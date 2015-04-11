@@ -1,58 +1,114 @@
 /**
  * Created by wangqr on 3/29/2015.
  */
-app.factory('shareService',function($http,$location,sessionService){
+app.factory('speechService',function($http,$location,httpFacade){
     return {
-        speeches : function(){
-            return $http.get(rootUrl + '/speeches');
+        getSpeeches : function(){
+            return httpFacade.getSpeeches();
         },
 
-        iWantToShare : function(data,scope){
-            var $promise = $http.post(rootUrl + '/speeches',data);
-            $promise.then(function(success){
+        getSpeechById : function(speechID){
+            var data = {'id' : speechID};
+            return httpFacade.getSpeechById(data);
+        },
+
+        updateSpeech : function(data, speechId){
+
+            httpFacade.updateSpeech(data, speechId).success(function(){
+                $location.path('/mypublished');
+            });
+
+        },
+
+        addSpeech : function(data,scope){
+            httpFacade.saveSpeech(data).success(function() {
                 $location.path('/share');
-            },function(error){
-                scope.iWantToShareFailtext =  error.errors;
-                $location.path('/share');
+            }).error(function(status){
+                    switch(status) {
+                        case 500: {
+                            $scope.message = "Something went wrong!";
+                            break;
+                        }
+                    }
+                    scope.message =  error.errors;
+                    $location.path('/share');
             })
         },
 
-        submitComment : function(data,scope) {
-            var $promise = $http.post(rootUrl + '/speech-comments', data);
-            $promise.then(function () {
-                $http.get(rootUrl + '/speeches').success(function(response){
+        showSpeeches : function(speeches,interests,scope){
+            $.each(speeches, function (index, content) {
+                if(interests.length > 0)
+                {
+                    var flag = 0;
+                    $.each(interests, function (index, interestContent) {
+                        if(interestContent.speechID == content.id)
+                        {
+                            eval("scope.interest" + content.id + "=" + 'true');
+                            flag = 1;
+                            return false;
+                        }
+                    });
+                    if(flag == 0)
+                    {
+                        eval("scope.interest" + content.id + "=" + 'false');
+                    }
+                }
+                else
+                {
+                    eval("scope.interest" + content.id + "=" + 'false');
+                }
+            });
+        }
+    }
+});
+
+
+app.factory('commentService',function($http,$location,httpFacade) {
+    return {
+
+        deleteComment : function(ID, scope){
+            httpFacade.deleteComment(ID).success(function(){
+                httpFacade.getSpeeches().success(function(response){
                     scope.speechesList = response;
                 });
                 $location.path('/share');
-            }, function (error) {
-                scope.commitCommentFailtext = error.errors;
+            });
+        },
+        addComment : function(data,scope) {
+            httpFacade.saveComment(data).success(function (success) {
+                httpFacade.getSpeeches().success(function(response){
+                    scope.speechesList = response;
+                });
+                $location.path('/share');
+            }).error(function(status){
+                switch(status) {
+                    case 500: {
+                        $scope.message = "Something went wrong!";
+                        break;
+                    }
+                }
+                scope.message =  error.errors;
                 $location.path('/share');
             })
+        }
+    }
+});
+
+app.factory('interestService',function($http,$location,httpFacade) {
+    return {
+        getInterestByUserId : function(id){
+            var data = {'userID' : id};
+            return httpFacade.getInterestById(data);
         },
 
-
-        showInterest : function(){
-           return $http({
-                method : 'GET',
-                url : rootUrl + '/speech-interested',
-                params : {'userID' : sessionService.get('uid')}
-            });
-        },
-
-        interestId : function(speechID){
-            return $http({
-                method : 'GET',
-                url : rootUrl + '/speech-interested',
-                params : {'userID' : sessionService.get('uid') , 'speechID' : speechID}
-            });
+        getInterestById : function(speechID,id){
+            var data = {'userID' : id , 'speechID' : speechID};
+            return httpFacade.getInterestById(data);
         },
 
         deleteInterest : function(ID,speechId, scope){
-            $http({
-                method : 'DELETE',
-                url : rootUrl + '/speech-interested/' + ID
-            }).success(function(){
-                $http.get(rootUrl + '/speeches').success(function(response){
+            httpFacade.deleteInterest(ID).success(function(){
+                httpFacade.getSpeeches().success(function(response){
                     scope.speechesList = response;
                     eval("scope.interest" + speechId + "=" + 'false');
                 });
@@ -60,20 +116,51 @@ app.factory('shareService',function($http,$location,sessionService){
             });
         },
 
-        addInterest : function(speechID,scope){
-            $http({
-                method : 'POST',
-                url : rootUrl + '/speech-interested',
-                data : {'userID' : sessionService.get('uid') , 'speechID' : speechID, 'createdOn' : new Date().valueOf()}
-            }).success(
-                function(){
-                    $http.get(rootUrl + '/speeches').success(function(response){
-                        scope.speechesList = response;
-                        eval("scope.interest" + speechID + "=" + 'true');
-                    });
-                    $location.path('/share');
-                }
-            );
+        addInterest : function(speechId,data,scope){
+            httpFacade.saveInterest(data).success(function(){
+                httpFacade.getSpeeches().success(function(response){
+                    scope.speechesList = response;
+                    eval("scope.interest" + speechId + "=" + 'true');
+                });
+                $location.path('/share');
+            });
         }
+    }
+});
+
+
+app.factory('myShareService',function($http,httpFacade){
+    return {
+        mySpeeches : function(userID){
+            var data = {'speakerID' : userID};
+            return httpFacade.getSpeechById(data);
+        }
+    }
+});
+
+
+app.factory('feedbackService',function($http,$location,httpFacade){
+    return {
+            getFeedbackByUserIdSpeechId : function(userID,speechID){
+                var data = {
+                    'userID' : userID,
+                    'speechID' : speechID
+                };
+                return httpFacade.getFeedbackById(data);
+             },
+
+            addFeedback : function(data,scope){
+                httpFacade.saveFeedback(data).success(function(){
+                    var sendMessage={'id':data.speechID};
+                    $('#feedbackForm').remove();
+                    $('#isFeedbacked').show();
+                    httpFacade.getSpeechById(sendMessage).success(function(response){
+                        scope.feedback = response.feedbacks[0];
+                        $('.isStared').raty({ readOnly: true, score: response.feedbacks[0].stars });
+                    });
+                    $location.path('/share/' + data.speechID);
+                });
+            }
+
     }
 });

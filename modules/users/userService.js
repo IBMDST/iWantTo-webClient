@@ -1,22 +1,30 @@
 /**
  * Created by wangqr on 3/27/2015.
  */
-app.factory('loginService',function($http, $location, sessionService){
+app.factory('loginService',function($http, $location, sessionService,httpFacade){
     return{
         login : function(data,scope){
-            var $promise = $http.post(rootUrl + '/users/login',data);
-            $promise.then(function(success){
-                var uid = success.data.uid;
-                    sessionService.set('uid',uid);
-                    $location.path('/share');
-            },function(error){
+            httpFacade.checkUser(data).success(function(success){
+                var uid = success.uid;
+                sessionService.set('uid',uid);
+                $location.path('/share');
+            }).error(function (errors) {
+                switch(errors.status) {
+                    case 500: {
+                        scope.message = "Something went wrong!";
+                        break;
+                    }
+                    case 401:{
+                        scope.loginError = "Username and password are not matched";
+                        break;
+                    }
+                }
                 $location.path('/login');
-                scope.loginError = "Username and password are not matched ";
-            })
+            });
         },
 
-        logout:function(scope){
-            sessionService.destroy('uid');
+        logout:function(service){
+            service.destroy('uid');
             $location.path('/login');
         },
 
@@ -34,32 +42,26 @@ app.factory('loginService',function($http, $location, sessionService){
     }
 });
 
-app.factory('sessionService', ['$http', function($http){
-    return{
-        set:function(key,value){
-            return sessionStorage.setItem(key,value);
-        },
-        get:function(key){
-            return sessionStorage.getItem(key);
-        },
-        destroy:function(key){
-            $http.post(rootUrl + '/users/logout');
-            return sessionStorage.removeItem(key);
-        }
-    };
-}]);
 
-app.factory('signupService', function($http, $location,sessionService){
+
+app.factory('signupService', function($http, $location,sessionService,httpFacade){
     return{
         signup : function(data,scope){
-            var $promise = $http.post(rootUrl + '/users',data);
-            $promise.then(function(success){
-                var uid = success.data.id;
+            httpFacade.saveUser(data).success(function (success) {
+                var uid = success.uid;
                 sessionService.set('uid',uid);
                 $location.path('/share');
-
-            },function(error){
-                scope.signupFailtext = "Name "+ error.data.errors.username;
+            }).error(function(errors){
+                switch(errors.status) {
+                    case 500: {
+                        scope.message = "Something went wrong!";
+                        break;
+                    }
+                    case 400:{
+                        scope.signupFailtext = "username "+ errors.errors.username;
+                        break;
+                    }
+                }
                 $location.path('/signup');
             })
         }

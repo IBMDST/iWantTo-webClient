@@ -1,6 +1,12 @@
-var app = angular.module('loginApp',['ngRoute']);
+var app = angular.module('shareApp',['ngRoute']);
 var rootUrl = 'http://share.in-sync.co:2403';
-app.config(['$routeProvider',function($routeProvider){
+//var rootUrl = 'http://9.115.28.132';
+app.config(['$routeProvider','$locationProvider','$httpProvider',function($routeProvider,$locationProvider,$httpProvider){
+
+    $locationProvider.html5Mode(false);
+    $httpProvider.defaults.useXDomain = true;
+    delete $httpProvider.defaults.headers.common['X-Requested-With'];
+    $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
     $routeProvider.
         when('/login',{
             templateUrl : 'modules/users/login.html',
@@ -18,13 +24,27 @@ app.config(['$routeProvider',function($routeProvider){
             templateUrl : 'modules/share/iwanttoshare.html',
             controller : 'ShareController'
         })
+        .when('/mypublished/update/:updateSpeechId',{
+            templateUrl : 'modules/share/updateshare.html',
+            controller : 'UpdateSpeechController'
+        })
+        .when('/mypublished',{
+            templateUrl : 'modules/share/mypublished.html',
+            controller : 'ShareController'
+        })
+        .when('/share/:speechId',{
+            templateUrl : 'modules/share/shareinfo.html',
+            controller : 'SpeechInfoController'
+        })
         .otherwise({redirectTo:'/login'})
 }]);
 
 app.run(function ($rootScope, $location, loginService) {
-    var routespermission = ['/share','/iwanttoshare'];
+    var routespermission = ['/share','/iwanttoshare','/mypublished'];
+    var updatePattern = /^\/mypublished\/update\//;
+    var speechByIdPattern = /^\/share\//;
     $rootScope.$on('$routeChangeStart',function(){
-        if( routespermission.indexOf($location.path()) !=-1)
+        if( routespermission.indexOf($location.path()) !=-1 || updatePattern.test($location.path()) ||speechByIdPattern.test($location.path()))
         {
             var connected = loginService.islogged();
             if(!connected)
@@ -33,5 +53,10 @@ app.run(function ($rootScope, $location, loginService) {
             }
         }
     });
-
 });
+
+app.controller('AppController',['$scope','loginService','sessionService',function ($scope,loginService,sessionService) {
+    $scope.logout = function(){
+        loginService.logout(sessionService);
+    };
+}]);
