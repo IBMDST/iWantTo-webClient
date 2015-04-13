@@ -1,7 +1,7 @@
 /**
  * Created by wangqr on 3/28/2015.
  */
-app.controller('ShareController',['$scope','$rootScope','initService','loginService','speechService','myShareService','interestService','commentService','$location',function($scope,$rootScope,initService,loginService,speechService,myShareService,interestService,commentService,$location){
+app.controller('ShareController',['$scope','$rootScope','initService','loginService','speechService','myShareService','interestService','commentService','feedbackService','$location',function($scope,$rootScope,initService,loginService,speechService,myShareService,interestService,commentService,feedbackService,$location){
     $scope.speechesList = [];
     var userId = initService.init();
     $scope.currentUser = userId;
@@ -60,8 +60,7 @@ app.controller('ShareController',['$scope','$rootScope','initService','loginServ
     };
 
     $scope.activeTabs = [];
-
-    $scope.isOpenComment = function (tab) {
+    $scope.isOpenActiveTab = function (tab) {
         if ($scope.activeTabs.indexOf(tab) > -1)
         {
             return true;
@@ -72,14 +71,36 @@ app.controller('ShareController',['$scope','$rootScope','initService','loginServ
         }
     };
 
-    $scope.openComment = function (tab) {
-        //check if tab is already open
-        if ($scope.isOpenComment(tab)) {
-            $scope.activeTabs.splice($scope.activeTabs.indexOf(tab), 1);
+    $scope.openTab = function (name,id) {
+        if ($scope.isOpenActiveTab(name+id)) {
+            $scope.activeTabs.splice($scope.activeTabs.indexOf(name+id), 1);
         } else {
-            $scope.activeTabs.push(tab);
+            if(name=='comment')
+            {
+                if($scope.activeTabs.indexOf('meetinginfo'+id)>-1)
+                $scope.activeTabs.splice($scope.activeTabs.indexOf('meetinginfo'+id), 1);
+                if($scope.activeTabs.indexOf('feedback'+id)>-1)
+                $scope.activeTabs.splice($scope.activeTabs.indexOf('feedback'+id), 1);
+            }
+            else if(name=='meetinginfo')
+            {
+                if($scope.activeTabs.indexOf('comment'+id)>-1)
+                $scope.activeTabs.splice($scope.activeTabs.indexOf('comment'+id), 1);
+                if($scope.activeTabs.indexOf('feedback'+id)>-1)
+                 $scope.activeTabs.splice($scope.activeTabs.indexOf('feedback'+id), 1);
+            }
+            else if(name=='feedback')
+            {
+                if($scope.activeTabs.indexOf('meetinginfo'+id)>-1)
+                $scope.activeTabs.splice($scope.activeTabs.indexOf('meetinginfo'+id), 1);
+                if($scope.activeTabs.indexOf('comment'+id)>-1)
+                $scope.activeTabs.splice($scope.activeTabs.indexOf('comment'+id), 1);
+            }
+            $scope.activeTabs.push(name+id);
         }
     };
+
+
 
     $scope.deleteComment = function (id) {
         commentService.deleteComment(id,$scope);
@@ -94,6 +115,29 @@ app.controller('ShareController',['$scope','$rootScope','initService','loginServ
             'createdOn' : new Date().valueOf()
         };
         commentService.addComment(sendCommentMessage,$scope);
+    };
+
+    $scope.submitFeedback = function(comment, speechId){
+        var stars = $('#feedback-comment' +speechId+'>input').val();
+        if(stars=='')
+        {
+            alert('Stars is required');
+        }
+        else
+        {
+            var data =  {
+                'userID' : userId,
+                'comment' : comment,
+                'speechID' : speechId,
+                'createdOn' : new Date().valueOf(),
+                'stars' : stars
+            };
+            feedbackService.addFeedback(data,$scope);
+        }
+    };
+
+    $scope.deleteFeedback = function (id) {
+        feedbackService.deleteFeedback(id,$scope);
     };
 
 }]);
@@ -117,52 +161,5 @@ app.controller('UpdateSpeechController', function($scope,$rootScope, $routeParam
 });
 
 
-app.controller('SpeechInfoController', function($scope, $routeParams, initService, speechService, feedbackService) {
-    var userId = initService.init();
-    var speechId =$routeParams.speechId;
-    speechService.getSpeechById(speechId).success(function(response){
-        $scope.meetingInfo = response;
-        //2015-04-09 20:00
-        var formatMeetingTime = response.when.replace(/-/ig,'/');
-        var meetingTime= new Date(formatMeetingTime).valueOf();
-        var currentTime = new Date().valueOf();
-        if(currentTime>=meetingTime)
-        {
-            $scope.isMeetingStart = true;
-            feedbackService.getFeedbackByUserIdSpeechId(userId,speechId).success(function(response)
-            {
-                if(response.length>0)
-                {
-                    $scope.feedback= response[0];
-                    $('#feedbackForm').remove();
-                    $('.isStared').raty({ readOnly: true, score: response[0].stars });
-                }
-                else
-                {
-                    $('#isFeedbacked').hide();
-                    $('#star').raty({});
-                }
-
-            });
-        }
-        else
-        {
-            $scope.isMeetingStart = false;
-        }
-    });
-
-    $scope.submitFeedback = function(comment){
-        var stars = $('#star>input').val();
-        var data =  {
-            'userID' : userId,
-            'comment' : comment,
-            'speechID' : speechId,
-            'createdOn' : new Date().valueOf(),
-            'stars' : stars
-        };
-        feedbackService.addFeedback(data,$scope)
-
-    };
-});
 
 

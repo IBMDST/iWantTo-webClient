@@ -12,6 +12,7 @@ app.directive('isLogged', function() {
     }
 });
 
+
 var appForm = angular.module('updateForm', []);
 appForm.directive('rcInitial', function() {
     return {

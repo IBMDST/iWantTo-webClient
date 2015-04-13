@@ -32,14 +32,10 @@ app.config(['$routeProvider','$locationProvider','$httpProvider',function($route
             templateUrl : 'modules/share/mypublished.html',
             controller : 'ShareController'
         })
-        .when('/share/:speechId',{
-            templateUrl : 'modules/share/shareinfo.html',
-            controller : 'SpeechInfoController'
-        })
         .otherwise({redirectTo:'/login'})
 }]);
 
-app.run(function ($rootScope, $location, loginService) {
+app.run(function ($rootScope, $location, loginService, sessionService) {
     var routespermission = ['/share','/iwanttoshare','/mypublished'];
     var updatePattern = /^\/mypublished\/update\//;
     var speechByIdPattern = /^\/share\//;
@@ -60,3 +56,4 @@ app.controller('AppController',['$scope','loginService','sessionService',functio
         loginService.logout(sessionService);
     };
 }]);
+

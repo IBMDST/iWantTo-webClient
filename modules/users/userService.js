@@ -19,7 +19,6 @@ app.factory('loginService',function($http, $location, sessionService,httpFacade)
                         break;
                     }
                 }
-                $location.path('/login');
             });
         },
 
@@ -62,7 +61,6 @@ app.factory('signupService', function($http, $location,sessionService,httpFacade
                         break;
                     }
                 }
-                $location.path('/signup');
             })
         }
     }

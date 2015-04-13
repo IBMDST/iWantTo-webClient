@@ -20,7 +20,7 @@ app.factory('sessionService', ['$http','$rootScope', function($http,$rootScope){
 app.factory("httpFacade", function ($http) {
     var debug = false;
     var  _checkUser,_saveUser,_getSpeeches , _saveSpeech ,_updateSpeech , _getInterestById,_saveComment ,_deleteInterest, _saveInterest,
-        _getSpeechById , _deleteComment ,_getFeedbackById,_saveFeedback ;
+        _getSpeechById , _deleteComment ,_getFeedbackById,_saveFeedback,_deleteFeedback ;
     if(!debug)
     {
         _checkUser = function (data) {
@@ -122,6 +122,13 @@ app.factory("httpFacade", function ($http) {
                 data: $.param(data)
             });
         };
+
+        _deleteFeedback = function(data){
+            return  $http({
+                method : 'DELETE',
+                url : rootUrl + '/speech-feedbacks/' + data
+            });
+        };
     }
     else
     {
@@ -202,6 +209,12 @@ app.factory("httpFacade", function ($http) {
                 rootTestUrl+'success.json'
             );
         };
+
+        _deleteFeedback = function(data){
+            return $http.get(
+                rootTestUrl+'success.json'
+            );
+        };
     }
 
     return {
@@ -217,7 +230,8 @@ app.factory("httpFacade", function ($http) {
         deleteComment : _deleteComment,
         updateSpeech : _updateSpeech,
         getFeedbackById : _getFeedbackById,
-        saveFeedback : _saveFeedback
+        saveFeedback : _saveFeedback,
+        deleteFeedback : _deleteFeedback
     };
 });
 

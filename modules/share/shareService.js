@@ -1,7 +1,7 @@
 /**
  * Created by wangqr on 3/29/2015.
  */
-app.factory('speechService',function($http,$location,httpFacade){
+app.factory('speechService',function($http,$location,$timeout,httpFacade){
     return {
         getSpeeches : function(){
             return httpFacade.getSpeeches();
@@ -31,7 +31,6 @@ app.factory('speechService',function($http,$location,httpFacade){
                         }
                     }
                     scope.message =  error.errors;
-                    $location.path('/share');
             })
         },
 
@@ -58,28 +57,43 @@ app.factory('speechService',function($http,$location,httpFacade){
                     eval("scope.interest" + content.id + "=" + 'false');
                 }
             });
+            this.showStars(speeches);
+        },
+
+        showStars : function(speeches){
+            setTimeout(function(){
+                $.each(speeches, function (index, content) {
+                    $('#feedback-comment' +content.id).raty({});
+                    if(content.feedbacks.length>0)
+                    {
+                        $.each(content.feedbacks, function(index, feedbacks){
+                            $('#star'+feedbacks.id).raty({ readOnly: true, score: feedbacks.stars });
+                        });
+                    }
+                });
+            },300);
         }
     }
 });
 
 
-app.factory('commentService',function($http,$location,httpFacade) {
+app.factory('commentService',function($http,$location,httpFacade,speechService) {
     return {
 
         deleteComment : function(ID, scope){
             httpFacade.deleteComment(ID).success(function(){
                 httpFacade.getSpeeches().success(function(response){
                     scope.speechesList = response;
+                    speechService.showStars(response);
                 });
-                $location.path('/share');
             });
         },
         addComment : function(data,scope) {
             httpFacade.saveComment(data).success(function (success) {
                 httpFacade.getSpeeches().success(function(response){
                     scope.speechesList = response;
+                    speechService.showStars(response);
                 });
-                $location.path('/share');
             }).error(function(status){
                 switch(status) {
                     case 500: {
@@ -88,13 +102,12 @@ app.factory('commentService',function($http,$location,httpFacade) {
                     }
                 }
                 scope.message =  error.errors;
-                $location.path('/share');
             })
         }
     }
 });
 
-app.factory('interestService',function($http,$location,httpFacade) {
+app.factory('interestService',function($http,$location,httpFacade,speechService) {
     return {
         getInterestByUserId : function(id){
             var data = {'userID' : id};
@@ -111,8 +124,8 @@ app.factory('interestService',function($http,$location,httpFacade) {
                 httpFacade.getSpeeches().success(function(response){
                     scope.speechesList = response;
                     eval("scope.interest" + speechId + "=" + 'false');
+                    speechService.showStars(response);
                 });
-                $location.path('/share');
             });
         },
 
@@ -121,8 +134,8 @@ app.factory('interestService',function($http,$location,httpFacade) {
                 httpFacade.getSpeeches().success(function(response){
                     scope.speechesList = response;
                     eval("scope.interest" + speechId + "=" + 'true');
+                    speechService.showStars(response);
                 });
-                $location.path('/share');
             });
         }
     }
@@ -139,7 +152,7 @@ app.factory('myShareService',function($http,httpFacade){
 });
 
 
-app.factory('feedbackService',function($http,$location,httpFacade){
+app.factory('feedbackService',function($http,$location,httpFacade,speechService){
     return {
             getFeedbackByUserIdSpeechId : function(userID,speechID){
                 var data = {
@@ -151,16 +164,22 @@ app.factory('feedbackService',function($http,$location,httpFacade){
 
             addFeedback : function(data,scope){
                 httpFacade.saveFeedback(data).success(function(){
-                    var sendMessage={'id':data.speechID};
-                    $('#feedbackForm').remove();
-                    $('#isFeedbacked').show();
-                    httpFacade.getSpeechById(sendMessage).success(function(response){
-                        scope.feedback = response.feedbacks[0];
-                        $('.isStared').raty({ readOnly: true, score: response.feedbacks[0].stars });
+                    httpFacade.getSpeeches().success(function (response) {
+                        scope.speechesList = response;
+                        speechService.showStars(response);
                     });
-                    $location.path('/share/' + data.speechID);
+
+                });
+            },
+
+            deleteFeedback : function(ID, scope){
+                httpFacade.deleteFeedback(ID).success(function(){
+                    httpFacade.getSpeeches().success(function(response){
+                        scope.speechesList = response;
+                        speechService.showStars(response);
+                    });
                 });
             }
-
     }
 });
+
