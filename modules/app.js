@@ -1,5 +1,5 @@
 var app = angular.module('shareApp',['ngRoute']);
-var rootUrl = 'http://share.in-sync.co:2403';
+var rootUrl = 'http://share.in-sync.co';
 var test ;
 app.config(['$routeProvider','$locationProvider','$httpProvider',function($routeProvider,$locationProvider,$httpProvider){
 
