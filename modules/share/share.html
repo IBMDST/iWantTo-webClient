@@ -17,6 +17,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-3 col-md-offset-9 btn-group btn-group-xs speech-bar" role="group" aria-label="...">
+                        <a ng-if="speech.speakerID==currentUser" class="btn btn-link" href="#/mypublished/update/{{speech.id}}"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
                         <button type="button" class="btn btn-link" ng-click="openTab('comment',speech.id)"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span>{{' '+speech.comments.length}}</button>
                         <button type="button" class="btn btn-link interests" aria-label="heart" ng-click="swapInterest(speech.id)">
                             <span id="{{speech.id}}" ng-class="{false : 'glyphicon glyphicon-heart-empty', true:'glyphicon glyphicon-heart'}[{{'interest'+speech.id}}]" aria-hidden="true"></span>
@@ -64,7 +65,7 @@
                     </div>
                 </div>
                 <div class="feedback" id="{{'feedbacks'+ speech.id}}" ng-show="isOpenActiveTab('feedback'+speech.id)">
-                    <form role="form" name="feedbackForm" novalidate>
+                    <form role="form" id="{{'feedback-form'+ speech.id}}" name="feedbackForm" ng-if="display(speech.id)" novalidate>
                         <textarea placeholder="I'd like to say..." ng-model="feedbackComment"  class="form-control comment-textarea" name="comment" rows="2" ></textarea>
                         <div class="row star-bar">
                             <div id={{'feedback-comment'+speech.id}} class="col-sm-5 stars"> Do you like it? </div>
@@ -74,16 +75,22 @@
                         </div>
                     </form>
 
-                    <div class="speech-line"></div>
                     <div ng-repeat="feedback in speech.feedbacks  | orderBy:'-createdOn'">
-                        <p class="feedback-font"><strong>{{feedback.userName}} : </strong>{{feedback.comment}}</p>
+                        <p class="feedback-font"><strong>{{feedback.userName}} : </strong><span id="{{'feedback-comment'+ feedback.id}}">{{feedback.comment}}</span></p>
                         <div id="{{'star'+ feedback.id}}"></div>
-                        <span class="comment-time-font">
-                            {{feedback.createdOn | date:'yyyy-MM-dd  HH:mm'}}
-                        </span>
-                        <button type="button" ng-click="deleteFeedback(feedback.id)" class="btn btn-link btn-xs pull-right" aria-label="remove" ng-if="feedback.userID==currentUser" >
-                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                        </button>
+                        <div class="row">
+                            <span class="col-md-5 comment-time-font">
+                                {{feedback.createdOn | date:'yyyy-MM-dd  HH:mm'}}
+                            </span>
+                            <div id="{{'feedback-submit' + feedback.id}}" class="col-md-2 col-md-offset-5 btn-group btn-group-xs" role="group"  ng-if="feedback.userID==currentUser">
+                                <button type="button" ng-click="editFeedback(feedback.id)" class="btn btn-link"  >
+                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                </button>
+                                <button type="button" ng-click="deleteFeedback(feedback.id)" class="btn btn-link">
+                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                        </div>
                         <div class="speech-line"></div>
                     </div>
                 </div>

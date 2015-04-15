@@ -1,12 +1,13 @@
 var app = angular.module('shareApp',['ngRoute']);
 var rootUrl = 'http://share.in-sync.co:2403';
-//var rootUrl = 'http://9.115.28.132';
+var test ;
 app.config(['$routeProvider','$locationProvider','$httpProvider',function($routeProvider,$locationProvider,$httpProvider){
 
     $locationProvider.html5Mode(false);
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
     $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+    $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded';
     $routeProvider.
         when('/login',{
             templateUrl : 'modules/users/login.html',
@@ -32,11 +33,31 @@ app.config(['$routeProvider','$locationProvider','$httpProvider',function($route
             templateUrl : 'modules/share/mypublished.html',
             controller : 'ShareController'
         })
+        .when('/unschedule',{
+            templateUrl : 'modules/share/unschedule.html',
+            controller : 'ShareController'
+        })
+        .when('/onschedule',{
+            templateUrl : 'modules/share/schedule.html',
+            controller : 'ShareController'
+        })
+        .when('/mycommented',{
+            templateUrl : 'modules/share/mycommented.html',
+            controller : 'ShareController'
+        })
+        .when('/myinterested',{
+            templateUrl : 'modules/share/myinterested.html',
+            controller : 'ShareController'
+        })
+        .when('/myfeedbacked',{
+            templateUrl : 'modules/share/myfeedbacked.html',
+            controller : 'ShareController'
+        })
         .otherwise({redirectTo:'/login'})
 }]);
 
-app.run(function ($rootScope, $location, loginService, sessionService) {
-    var routespermission = ['/share','/iwanttoshare','/mypublished'];
+app.run(function ($rootScope, $location, loginService) {
+    var routespermission = ['/share','/iwanttoshare','/mypublished','/unschedule','/onschedule','/mycommented','/myinterested','/myfeedbacked'];
     var updatePattern = /^\/mypublished\/update\//;
     var speechByIdPattern = /^\/share\//;
     $rootScope.$on('$routeChangeStart',function(){

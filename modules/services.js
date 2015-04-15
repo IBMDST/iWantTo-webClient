@@ -20,7 +20,8 @@ app.factory('sessionService', ['$http','$rootScope', function($http,$rootScope){
 app.factory("httpFacade", function ($http) {
     var debug = false;
     var  _checkUser,_saveUser,_getSpeeches , _saveSpeech ,_updateSpeech , _getInterestById,_saveComment ,_deleteInterest, _saveInterest,
-        _getSpeechById , _deleteComment ,_getFeedbackById,_saveFeedback,_deleteFeedback ;
+        _getSpeechById , _deleteComment ,_getFeedbackById,_saveFeedback,_deleteFeedback,_updateFeedback,_getSpeechByFixed
+        ,_getCommentById;
     if(!debug)
     {
         _checkUser = function (data) {
@@ -52,7 +53,14 @@ app.factory("httpFacade", function ($http) {
                 params : data
             });
         };
-
+        _getSpeechByFixed = function(data)
+        {
+            return $http({
+                method : 'GET',
+                url : rootUrl + '/speeches',
+                params : data
+            });
+        };
          _saveSpeech = function(data) {
             return $http({
                 method: 'POST',
@@ -65,7 +73,7 @@ app.factory("httpFacade", function ($http) {
             return $http({
                 method: 'PUT',
                 url: rootUrl + '/speeches/' + speechId,
-                data : data
+                data : $.param(data)
             });
         };
 
@@ -107,6 +115,14 @@ app.factory("httpFacade", function ($http) {
             });
         };
 
+        _getCommentById = function(data){
+            return $http({
+                method : 'GET',
+                url : rootUrl + '/speech-comments',
+                params : data
+            });
+        };
+
         _getFeedbackById = function(data){
             return $http({
                 method : 'GET',
@@ -129,6 +145,14 @@ app.factory("httpFacade", function ($http) {
                 url : rootUrl + '/speech-feedbacks/' + data
             });
         };
+
+        _updateFeedback = function(data, feedbackId){
+            return  $http({
+                method: 'PUT',
+                url: rootUrl + '/speech-feedbacks/' + feedbackId,
+                data : $.param(data)
+            });
+        };
     }
     else
     {
@@ -148,6 +172,13 @@ app.factory("httpFacade", function ($http) {
              return $http.get(
                  rootTestUrl+'speeches.json'
              );
+        };
+
+        _getSpeechByFixed = function(data)
+        {
+            return $http.get(
+                rootTestUrl+'speeches.json'
+            );
         };
 
          _saveSpeech = function() {
@@ -215,6 +246,18 @@ app.factory("httpFacade", function ($http) {
                 rootTestUrl+'success.json'
             );
         };
+
+        _updateFeedback = function(data, feedbackId){
+            return $http.get(
+                rootTestUrl+'success.json'
+            );
+        };
+
+        _getCommentById = function(data, feedbackId){
+            return $http.get(
+                rootTestUrl+'speech-comments.json'
+            );
+        };
     }
 
     return {
@@ -231,7 +274,10 @@ app.factory("httpFacade", function ($http) {
         updateSpeech : _updateSpeech,
         getFeedbackById : _getFeedbackById,
         saveFeedback : _saveFeedback,
-        deleteFeedback : _deleteFeedback
+        deleteFeedback : _deleteFeedback,
+        updateFeedback : _updateFeedback,
+        getSpeechByFixed : _getSpeechByFixed,
+        getCommentById : _getCommentById
     };
 });
 
@@ -243,3 +289,89 @@ app.factory('initService', ['$rootScope','loginService','sessionService', functi
         }
     };
 }]);
+
+
+app.factory('paintService', function(httpFacade,initService, speechService,branchService){
+    var userId = initService.init();
+    var data = {'speakerID' : userId};
+    var dataUserId = { 'userID' : userId};
+    return{
+
+
+        paint:function(scope,speeches){
+            httpFacade.getInterestById(dataUserId).success(function(interest){
+                speechService.showSpeeches(speeches,interest,scope);
+            });
+        },
+
+        paintWithComment:function(scope){
+            httpFacade.getSpeeches().success(function(response){
+                scope.speechesList = response;
+                speechService.showStars(response);
+                branchService.speechesByType(scope,'comment',response);
+                branchService.speechesByType(scope,'interest',response);
+                branchService.speechesByType(scope,'feedback',response);
+            });
+            httpFacade.getSpeechById(data).success(function(response){
+                scope.mySpeechesList = response;
+            });
+
+            httpFacade.getSpeechByFixed({'fixed':false}).success(function (response) {
+                scope.unscheduledSpeechesList = response;
+            });
+
+            httpFacade.getSpeechByFixed({'fixed':true}).success(function (response) {
+                scope.scheduledSpeechesList = response;
+            });
+        },
+
+        paintWithFeedback:function(scope){
+            httpFacade.getSpeeches().success(function(response){
+                httpFacade.getFeedbackById(dataUserId).success(function(feedbacks){
+                    scope.feedbackByCurrentUserList = feedbacks;
+                    scope.speechesList = response;
+                    speechService.showStars(response);
+                    branchService.speechesByType(scope,'comment',response);
+                    branchService.speechesByType(scope,'interest',response);
+                    branchService.speechesByType(scope,'feedback',response);
+                })
+            });
+
+            httpFacade.getSpeechById(data).success(function(response){
+                    scope.mySpeechesList = response;
+                    speechService.showStars(response);
+            });
+
+            httpFacade.getSpeechByFixed({'fixed':false}).success(function (response) {
+                scope.unscheduledSpeechesList = response;
+            });
+
+            httpFacade.getSpeechByFixed({'fixed':true}).success(function (response) {
+                scope.scheduledSpeechesList = response;
+            });
+        },
+
+        paintWithInterest:function(scope,speechId,b){
+            httpFacade.getSpeeches().success(function(response){
+                scope.speechesList = response;
+                eval("scope.interest" + speechId + "=" + b);
+                speechService.showStars(response);
+                branchService.speechesByType(scope,'comment',response);
+                branchService.speechesByType(scope,'interest',response);
+                branchService.speechesByType(scope,'feedback',response);
+            });
+
+            httpFacade.getSpeechById(data).success(function(response){
+                scope.mySpeechesList = response;
+            });
+
+            httpFacade.getSpeechByFixed({'fixed':false}).success(function (response) {
+                scope.unscheduledSpeechesList = response;
+            });
+
+            httpFacade.getSpeechByFixed({'fixed':true}).success(function (response) {
+                scope.scheduledSpeechesList = response;
+            });
+        }
+    };
+});

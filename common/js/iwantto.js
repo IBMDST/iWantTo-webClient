@@ -7,5 +7,6 @@ $( document ).ready(function() {
         $(this).next('div.interests-overlay').hide();
     });
 
-});
 
+
+});
