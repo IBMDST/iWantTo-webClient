@@ -26,10 +26,15 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" ng-if="isLogged">
             <ul class="nav navbar-nav navbar-right">
                 <li><a class="btn btn-link" href="#/share">Overview</a></li>
-                <li><a class="btn btn-link" href="#/unschedule">Unschedule</a></li>
-                <li><a class="btn btn-link" href="#/onschedule">Schedule</a></li>
                 <li class="dropdown">
-                    <button class="btn btn-link navbar-btn dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">My Share <span class="caret"></span></button>
+                    <button class="btn btn-link navbar-btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">Schedule <span class="caret"></span></button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#/unschedule">Unschedule</a></li>
+                        <li><a href="#/onschedule">Schedule</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <button class="btn btn-link navbar-btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">My Share <span class="caret"></span></button>
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="#/mypublished">My published Speech</a></li>
                         <li><a href="#/mycommented">My commented Speech</a></li>

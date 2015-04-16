@@ -5,10 +5,16 @@ app.factory('loginService',function($http, $location, sessionService,httpFacade)
     return{
         login : function(data,scope){
             httpFacade.checkUser(data).success(function(success){
-
                 var uid = success.uid;
-                sessionService.set('uid',uid);
-                $location.path('/share');
+                if(typeof uid == 'undefined')
+                {
+                    scope.loginError = 'Not login successfully';
+                }
+                else
+                {
+                    sessionService.set('uid',uid);
+                    $location.path('/share');
+                }
             }).error(function (errors) {
                 scope.loginError = errors;
             });
