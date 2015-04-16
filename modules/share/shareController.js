@@ -12,61 +12,56 @@ app.controller('ShareController',['$scope','$rootScope','$compile','initService'
         $scope.feedbackByCurrentUserList = response;
     });
 
-    if(path=='/share')
-    {
-        speechService.getSpeeches().success(function (response) {
-            paintService.paint($scope,response);
-            $scope.speechesList = response;
-            if(response.length==0){$scope.allsharemessage="No speech"}
-        });
-    }
-    else if(path=='/mypublished')
-    {
-        $scope.showSpeeches = [];
-        httpFacade.getSpeeches().success(function(response) {
-            branchService.speechesByType($scope,'mypulished',response);
-            paintService.paint($scope,response);
-        });
-    }
-    else if(path=='/unschedule')
-    {
-        $scope.unscheduledSpeechesList = [];
-        httpFacade.getSpeeches().success(function(response) {
-            branchService.speechesByType($scope,'unschedule',response);
-            paintService.paint($scope,response);
-        });
-    }
-    else if(path=='/onschedule')
-    {
-        $scope.scheduledSpeechesList = [];
-        httpFacade.getSpeeches().success(function(response) {
-            branchService.speechesByType($scope,'onschedule',response);
-            paintService.paint($scope,response);
-        });
-    }
-    else if(path=='/mycommented')
-    {
-        $scope.mycommentedSpeechesList = [];
-        httpFacade.getSpeeches().success(function(response) {
-            branchService.speechesByType($scope,'comment',response);
-            paintService.paint($scope,response);
-         });
-    }
-    else if(path=='/myinterested')
-    {
-        $scope.myinterestedSpeechesList = [];
-        httpFacade.getSpeeches().success(function(response) {
-            branchService.speechesByType($scope,'interest',response);
-            paintService.paint($scope,response);
-        });
-    }
-    else if(path=='/myfeedbacked')
-    {
-        $scope.myfeedbackedSpeechesList = [];
-        httpFacade.getSpeeches().success(function(response) {
-            branchService.speechesByType($scope,'feedback',response);
-            paintService.paint($scope,response);
-        });
+    switch(path){
+        case "/share":
+            speechService.getSpeeches().success(function (response) {
+                paintService.paint($scope,response);
+                $scope.speechesList = response;
+                if(response.length==0){$scope.allsharemessage="No speech"}
+            });
+            break;
+        case "/mypublished":
+            $scope.showSpeeches = [];
+            httpFacade.getSpeeches().success(function(response) {
+                branchService.speechesByType($scope,'mypulished',response);
+                paintService.paint($scope,response);
+            });
+            break;
+        case "/unschedule":
+            $scope.unscheduledSpeechesList = [];
+            httpFacade.getSpeeches().success(function(response) {
+                branchService.speechesByType($scope,'unschedule',response);
+                paintService.paint($scope,response);
+            });
+            break;
+        case "/onschedule":
+            $scope.scheduledSpeechesList = [];
+            httpFacade.getSpeeches().success(function(response) {
+                branchService.speechesByType($scope,'onschedule',response);
+                paintService.paint($scope,response);
+            });
+            break;
+        case "/mycommented":
+            $scope.mycommentedSpeechesList = [];
+            httpFacade.getSpeeches().success(function(response) {
+                branchService.speechesByType($scope,'comment',response);
+                paintService.paint($scope,response);
+            });
+            break;
+        case "/myinterested":
+            $scope.myinterestedSpeechesList = [];
+            httpFacade.getSpeeches().success(function(response) {
+                branchService.speechesByType($scope,'interest',response);
+                paintService.paint($scope,response);
+            });
+            break;
+        case "/myfeedbacked":
+            $scope.myfeedbackedSpeechesList = [];
+            httpFacade.getSpeeches().success(function(response) {
+                branchService.speechesByType($scope,'feedback',response);
+                paintService.paint($scope,response);
+            });
+            break;
     }
 
     $scope.display = function(data){
@@ -138,26 +133,25 @@ app.controller('ShareController',['$scope','$rootScope','$compile','initService'
         if ($scope.isOpenActiveTab(name+id)) {
             $scope.activeTabs.splice($scope.activeTabs.indexOf(name+id), 1);
         } else {
-            if(name=='comment')
-            {
-                if($scope.activeTabs.indexOf('meetinginfo'+id)>-1)
-                $scope.activeTabs.splice($scope.activeTabs.indexOf('meetinginfo'+id), 1);
-                if($scope.activeTabs.indexOf('feedback'+id)>-1)
-                $scope.activeTabs.splice($scope.activeTabs.indexOf('feedback'+id), 1);
-            }
-            else if(name=='meetinginfo')
-            {
-                if($scope.activeTabs.indexOf('comment'+id)>-1)
-                $scope.activeTabs.splice($scope.activeTabs.indexOf('comment'+id), 1);
-                if($scope.activeTabs.indexOf('feedback'+id)>-1)
-                 $scope.activeTabs.splice($scope.activeTabs.indexOf('feedback'+id), 1);
-            }
-            else if(name=='feedback')
-            {
-                if($scope.activeTabs.indexOf('meetinginfo'+id)>-1)
-                $scope.activeTabs.splice($scope.activeTabs.indexOf('meetinginfo'+id), 1);
-                if($scope.activeTabs.indexOf('comment'+id)>-1)
-                $scope.activeTabs.splice($scope.activeTabs.indexOf('comment'+id), 1);
+            switch(name){
+                case "comment":
+                    if($scope.activeTabs.indexOf('meetinginfo'+id)>-1)
+                        $scope.activeTabs.splice($scope.activeTabs.indexOf('meetinginfo'+id), 1);
+                    if($scope.activeTabs.indexOf('feedback'+id)>-1)
+                        $scope.activeTabs.splice($scope.activeTabs.indexOf('feedback'+id), 1);
+                    break;
+                case "meetinginfo":
+                    if($scope.activeTabs.indexOf('comment'+id)>-1)
+                        $scope.activeTabs.splice($scope.activeTabs.indexOf('comment'+id), 1);
+                    if($scope.activeTabs.indexOf('feedback'+id)>-1)
+                        $scope.activeTabs.splice($scope.activeTabs.indexOf('feedback'+id), 1);
+                    break;
+                case "feedback":
+                    if($scope.activeTabs.indexOf('meetinginfo'+id)>-1)
+                        $scope.activeTabs.splice($scope.activeTabs.indexOf('meetinginfo'+id), 1);
+                    if($scope.activeTabs.indexOf('comment'+id)>-1)
+                        $scope.activeTabs.splice($scope.activeTabs.indexOf('comment'+id), 1);
+                    break;
             }
             $scope.activeTabs.push(name+id);
         }
