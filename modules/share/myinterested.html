@@ -10,6 +10,7 @@
                 </h1>
                 <p>Here is a place...</p>
             </header>
+            {{interestedmessage}}
             <div ng-repeat="speech in myinterestedSpeechesList | orderBy:'-createdOn'">
                 <h3>{{speech.subject}}</h3>
                 <p>{{speech.description}}</p>

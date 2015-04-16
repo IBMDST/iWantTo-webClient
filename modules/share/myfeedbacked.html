@@ -10,6 +10,7 @@
                 </h1>
                 <p>Here is a place...</p>
             </header>
+            {{feedbackedmessage}}
             <div ng-repeat="speech in myfeedbackedSpeechesList | orderBy:'-createdOn'">
                 <h3>{{speech.subject}}</h3>
                 <p>{{speech.description}}</p>

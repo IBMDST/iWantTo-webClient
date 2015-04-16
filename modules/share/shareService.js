@@ -197,7 +197,7 @@ app.factory('branchService',function($http,httpFacade, initService){
                         lists.length > 0 ? scope.myfeedbackedSpeechesList = lists : scope.feedbackedmessage = "No speech on feedback";
                         break;
                     case "mypulished":
-                        lists.length > 0 ? scope.mySpeechesList = lists : scope.mypublishededmessage = "No speech on mypublish";
+                        lists.length > 0 ? scope.mySpeechesList = lists : scope.mypublishededmessage = "No speech on publish";
                         break;
                     case "unschedule":
                         lists.length > 0 ? scope.unscheduledSpeechesList = lists : scope.unscheduledmessage = "No speech on unschedule";
@@ -219,7 +219,7 @@ app.factory('branchService',function($http,httpFacade, initService){
                         scope.feedbackedmessage = "No speech on feedback";
                           break;
                     case "mypulished":
-                        scope.mypublishededmessage = "No speech on mypublish";
+                        scope.mypublishededmessage = "No speech on mpublish";
                         break;
                     case "unschedule":
                         scope.unscheduledmessage = "No speech on unschedule";
