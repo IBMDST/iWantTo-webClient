@@ -293,7 +293,6 @@ app.factory('initService', ['$rootScope','loginService','sessionService', functi
 
 app.factory('paintService', function(httpFacade,initService, speechService,branchService){
     var userId = initService.init();
-    var data = {'speakerID' : userId};
     var dataUserId = { 'userID' : userId};
     return{
 
@@ -308,20 +307,12 @@ app.factory('paintService', function(httpFacade,initService, speechService,branc
             httpFacade.getSpeeches().success(function(response){
                 scope.speechesList = response;
                 speechService.showStars(response);
+                branchService.speechesByType(scope,'mypulished',response);
+                branchService.speechesByType(scope,'unschedule',response);
+                branchService.speechesByType(scope,'onschedule',response);
                 branchService.speechesByType(scope,'comment',response);
                 branchService.speechesByType(scope,'interest',response);
                 branchService.speechesByType(scope,'feedback',response);
-            });
-            httpFacade.getSpeechById(data).success(function(response){
-                scope.mySpeechesList = response;
-            });
-
-            httpFacade.getSpeechByFixed({'fixed':false}).success(function (response) {
-                scope.unscheduledSpeechesList = response;
-            });
-
-            httpFacade.getSpeechByFixed({'fixed':true}).success(function (response) {
-                scope.scheduledSpeechesList = response;
             });
         },
 
@@ -331,23 +322,13 @@ app.factory('paintService', function(httpFacade,initService, speechService,branc
                     scope.feedbackByCurrentUserList = feedbacks;
                     scope.speechesList = response;
                     speechService.showStars(response);
+                    branchService.speechesByType(scope,'mypulished',response);
+                    branchService.speechesByType(scope,'unschedule',response);
+                    branchService.speechesByType(scope,'onschedule',response);
                     branchService.speechesByType(scope,'comment',response);
                     branchService.speechesByType(scope,'interest',response);
                     branchService.speechesByType(scope,'feedback',response);
                 })
-            });
-
-            httpFacade.getSpeechById(data).success(function(response){
-                    scope.mySpeechesList = response;
-                    speechService.showStars(response);
-            });
-
-            httpFacade.getSpeechByFixed({'fixed':false}).success(function (response) {
-                scope.unscheduledSpeechesList = response;
-            });
-
-            httpFacade.getSpeechByFixed({'fixed':true}).success(function (response) {
-                scope.scheduledSpeechesList = response;
             });
         },
 
@@ -356,22 +337,14 @@ app.factory('paintService', function(httpFacade,initService, speechService,branc
                 scope.speechesList = response;
                 eval("scope.interest" + speechId + "=" + b);
                 speechService.showStars(response);
+                branchService.speechesByType(scope,'mypulished',response);
+                branchService.speechesByType(scope,'unschedule',response);
+                branchService.speechesByType(scope,'onschedule',response);
                 branchService.speechesByType(scope,'comment',response);
                 branchService.speechesByType(scope,'interest',response);
                 branchService.speechesByType(scope,'feedback',response);
             });
 
-            httpFacade.getSpeechById(data).success(function(response){
-                scope.mySpeechesList = response;
-            });
-
-            httpFacade.getSpeechByFixed({'fixed':false}).success(function (response) {
-                scope.unscheduledSpeechesList = response;
-            });
-
-            httpFacade.getSpeechByFixed({'fixed':true}).success(function (response) {
-                scope.scheduledSpeechesList = response;
-            });
         }
     };
 });

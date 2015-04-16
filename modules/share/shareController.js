@@ -23,28 +23,25 @@ app.controller('ShareController',['$scope','$rootScope','$compile','initService'
     else if(path=='/mypublished')
     {
         $scope.showSpeeches = [];
-        branchService.mySpeeches(userId).success(function (response) {
+        httpFacade.getSpeeches().success(function(response) {
+            branchService.speechesByType($scope,'mypulished',response);
             paintService.paint($scope,response);
-            if(response.length==0){$scope.mypulishedmessage="No speech you published"}
-            $scope.mySpeechesList = response;
         });
     }
     else if(path=='/unschedule')
     {
         $scope.unscheduledSpeechesList = [];
-        branchService.unscheduledSpeeches().success(function (response) {
+        httpFacade.getSpeeches().success(function(response) {
+            branchService.speechesByType($scope,'unschedule',response);
             paintService.paint($scope,response);
-            if(response.length==0){$scope.unscheduledmessage="No speech on unschedule"}
-            $scope.unscheduledSpeechesList = response;
         });
     }
     else if(path=='/onschedule')
     {
         $scope.scheduledSpeechesList = [];
-        branchService.scheduledSpeeches().success(function (response) {
+        httpFacade.getSpeeches().success(function(response) {
+            branchService.speechesByType($scope,'onschedule',response);
             paintService.paint($scope,response);
-            if(response.length==0){$scope.scheduledmessage="No speech on schedule"}
-            $scope.scheduledSpeechesList = response;
         });
     }
     else if(path=='/mycommented')
@@ -54,8 +51,6 @@ app.controller('ShareController',['$scope','$rootScope','$compile','initService'
             branchService.speechesByType($scope,'comment',response);
             paintService.paint($scope,response);
          });
-
-
     }
     else if(path=='/myinterested')
     {

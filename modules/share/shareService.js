@@ -111,6 +111,7 @@ app.factory('interestService',function($http,$location,httpFacade,paintService) 
         },
 
         deleteInterest : function(ID,speechId, scope){
+            $('#'+speechId).parent('.interests').attr('disabled','disabled');
             httpFacade.deleteInterest(ID).success(function(){
                 paintService.paintWithInterest(scope,speechId,false);
             });
@@ -128,42 +129,63 @@ app.factory('interestService',function($http,$location,httpFacade,paintService) 
 app.factory('branchService',function($http,httpFacade, initService){
     var userId = initService.init();
     return {
-        mySpeeches: function (userID) {
-            var data = {'speakerID': userID};
-            return httpFacade.getSpeechById(data);
-        },
-
-        unscheduledSpeeches: function () {
-            return httpFacade.getSpeechByFixed({'fixed': false});
-        },
-
-        scheduledSpeeches: function () {
-            return httpFacade.getSpeechByFixed({'fixed': true});
-        },
 
         speechesByType: function (scope, type, response) {
             var lists = [];
-            var circleType;
+            var onceType = ['comment','interest','feedback'];
+            var mark = false;
+            if(onceType.indexOf(type)!=-1)
+            {
+                mark = true;
+            }
+
             if (response.length > 0) {
-                $.each(response, function (index, content) {
+                if(mark)
+                {
+                    var circleTypeContent;
+                    $.each(response, function (index, content) {
+                        switch(type){
+                            case "comment":
+                                circleTypeContent = content.comments;
+                                break;
+                            case "interest":
+                                circleTypeContent = content.interests;
+                                break;
+                            case "feedback":
+                                circleTypeContent = content.feedbacks;
+                                break;
+                        }
+                        $.each(circleTypeContent, function (i, type) {
+                            if (type.userID == userId) {
+                                lists.push(content);
+                                return false;
+                            }
+                        });
+                    });
+                }
+                else
+                {
                     switch(type){
-                        case "comment":
-                            circleType = content.comments;
+                        case "mypulished":
+                            $.each(response, function (index, content) {
+                                if(content.speakerID == userId)
+                                lists.push(content);
+                            });
                             break;
-                        case "interest":
-                            circleType = content.interests;
+                        case "unschedule":
+                            $.each(response, function (index, content) {
+                                if(content.fixed == false)
+                                    lists.push(content);
+                            });
                             break;
-                        case "feedback":
-                            circleType = content.feedbacks;
+                        case "onschedule":
+                            $.each(response, function (index, content) {
+                                if(content.fixed == true)
+                                    lists.push(content);
+                            });
                             break;
                     }
-                    $.each(circleType, function (i, type) {
-                        if (type.userID == userId) {
-                            lists.push(content);
-                            return false;
-                        }
-                    });
-                });
+                }
                 switch(type){
                     case "comment":
                         lists.length > 0 ? scope.mycommentedSpeechesList = lists : scope.commentedmessage = "No speech on comment";
@@ -174,19 +196,37 @@ app.factory('branchService',function($http,httpFacade, initService){
                     case "feedback":
                         lists.length > 0 ? scope.myfeedbackedSpeechesList = lists : scope.feedbackedmessage = "No speech on feedback";
                         break;
+                    case "mypulished":
+                        lists.length > 0 ? scope.mySpeechesList = lists : scope.mypublishededmessage = "No speech on mypublish";
+                        break;
+                    case "unschedule":
+                        lists.length > 0 ? scope.unscheduledSpeechesList = lists : scope.unscheduledmessage = "No speech on unschedule";
+                        break;
+                    case "onschedule":
+                        lists.length > 0 ? scope.scheduledSpeechesList = lists : scope.onscheduledmessage = "No speech on onschedule";
+                        break;
                 }
             }
             else{
                 switch(type){
                     case "comment":
-                        scope.commentedmessage = "No speech on comment"
+                        scope.commentedmessage = "No speech on comment";
                         break;
                     case "interest":
-                        scope.interestedmessage = "No speech on interest"
+                        scope.interestedmessage = "No speech on interest";
                          break;
                     case "feedback":
-                        scope.feedbackedmessage = "No speech on feedback"
+                        scope.feedbackedmessage = "No speech on feedback";
                           break;
+                    case "mypulished":
+                        scope.mypublishededmessage = "No speech on mypublish";
+                        break;
+                    case "unschedule":
+                        scope.unscheduledmessage = "No speech on unschedule";
+                        break;
+                    case "onschedule":
+                        scope.onscheduledmessage = "No speech on onschedule";
+                        break;
                 }
             }
         }
