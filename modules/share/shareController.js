@@ -4,12 +4,12 @@
 app.controller('ShareController',['$scope','$rootScope','$compile','initService','loginService','speechService','branchService','interestService','commentService','feedbackService','$location','paintService','httpFacade',function($scope,$rootScope, $compile,initService,loginService,speechService,branchService,interestService,commentService,feedbackService,$location,paintService,httpFacade){
     $scope.speechesList = [];
     $scope.feedbackByCurrentUserList = [];
-    var userId = initService.init();
-    $scope.currentUser = userId;
+    var userId ;
     var path = $location.path();
 
     switch(path){
         case "/share":
+            userId = initService.init();
             speechService.getSpeeches().success(function (response) {
                 paintService.paint($scope,response);
                 $scope.speechesList = response;
@@ -17,6 +17,7 @@ app.controller('ShareController',['$scope','$rootScope','$compile','initService'
             });
             break;
         case "/mypublished":
+            userId = initService.init();
             $scope.showSpeeches = [];
             httpFacade.getSpeeches().success(function(response) {
                 branchService.speechesByType($scope,'mypulished',response);
@@ -24,6 +25,7 @@ app.controller('ShareController',['$scope','$rootScope','$compile','initService'
             });
             break;
         case "/unschedule":
+            userId = initService.init();
             $scope.unscheduledSpeechesList = [];
             httpFacade.getSpeeches().success(function(response) {
                 branchService.speechesByType($scope,'unschedule',response);
@@ -31,6 +33,7 @@ app.controller('ShareController',['$scope','$rootScope','$compile','initService'
             });
             break;
         case "/onschedule":
+            userId = initService.init();
             $scope.scheduledSpeechesList = [];
             httpFacade.getSpeeches().success(function(response) {
                 branchService.speechesByType($scope,'onschedule',response);
@@ -38,6 +41,7 @@ app.controller('ShareController',['$scope','$rootScope','$compile','initService'
             });
             break;
         case "/mycommented":
+            userId = initService.init();
             $scope.mycommentedSpeechesList = [];
             httpFacade.getSpeeches().success(function(response) {
                 branchService.speechesByType($scope,'comment',response);
@@ -45,6 +49,7 @@ app.controller('ShareController',['$scope','$rootScope','$compile','initService'
             });
             break;
         case "/myinterested":
+            userId = initService.init();
             $scope.myinterestedSpeechesList = [];
             httpFacade.getSpeeches().success(function(response) {
                 branchService.speechesByType($scope,'interest',response);
@@ -52,6 +57,7 @@ app.controller('ShareController',['$scope','$rootScope','$compile','initService'
             });
             break;
         case "/myfeedbacked":
+            userId = initService.init();
             $scope.myfeedbackedSpeechesList = [];
             httpFacade.getSpeeches().success(function(response) {
                 branchService.speechesByType($scope,'feedback',response);

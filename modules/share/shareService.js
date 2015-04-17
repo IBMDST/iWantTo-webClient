@@ -245,14 +245,6 @@ app.factory('branchService',function($http,httpFacade, initService){
 
 app.factory('feedbackService',function($http,$location,httpFacade,paintService){
     return {
-
-            getFeedbackByUserId : function(userID){
-                var data = {
-                    'userID' : userID
-                };
-                return httpFacade.getFeedbackById(data);
-            },
-
             addFeedback : function(data,scope){
 
                 httpFacade.saveFeedback(data).success(function(){

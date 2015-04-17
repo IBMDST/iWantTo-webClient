@@ -1,6 +1,5 @@
 var app = angular.module('shareApp',['ngRoute']);
 app.config(['$routeProvider','$locationProvider','$httpProvider',function($routeProvider,$locationProvider,$httpProvider){
-
     $locationProvider.html5Mode(false);
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common['X-Requested-With'];

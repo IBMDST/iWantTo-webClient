@@ -1,7 +1,10 @@
 /**
  * Created by wangqr on 4/9/2015.
  */
-app.factory('sessionService', ['$http','$rootScope', function($http,$rootScope){
+var rootUrl = 'http://share.in-sync.co';
+//var rootUrl = 'http://share.in-sync.co:2403';
+
+app.factory('sessionService', ['$http','$rootScope','httpFacade', function($http,$rootScope,httpFacade){
     return{
         set:function(key,value){
             return sessionStorage.setItem(key,value);
@@ -11,6 +14,7 @@ app.factory('sessionService', ['$http','$rootScope', function($http,$rootScope){
         },
         destroy:function(key){
             $rootScope.isLogged = false;
+            httpFacade.logout();
             $http.post(rootUrl + '/users/logout');
             return sessionStorage.removeItem(key);
         }
@@ -18,12 +22,10 @@ app.factory('sessionService', ['$http','$rootScope', function($http,$rootScope){
 }]);
 
 app.factory("httpFacade", function ($http) {
-    var rootUrl = 'http://share.in-sync.co';
-    //var rootUrl = 'http://share.in-sync.co:2403';
     var debug = false;
     var  _checkUser,_saveUser,_getSpeeches , _saveSpeech ,_updateSpeech , _getInterestById,_saveComment ,_deleteInterest, _saveInterest,
         _getSpeechById , _deleteComment ,_getFeedbackById,_saveFeedback,_deleteFeedback,_updateFeedback,_getSpeechByFixed
-        ,_getCommentById;
+        ,_getCommentById,_logout;
     if(!debug)
     {
         _checkUser = function (data) {
@@ -31,6 +33,13 @@ app.factory("httpFacade", function ($http) {
                 method: 'POST',
                 url: rootUrl + '/users/login',
                 data: $.param(data)
+            });
+        };
+
+        _logout = function(){
+            return $http({
+                method: 'POST',
+                url: rootUrl + '/users/logout'
             });
         };
          _saveUser = function(data) {
@@ -279,7 +288,8 @@ app.factory("httpFacade", function ($http) {
         deleteFeedback : _deleteFeedback,
         updateFeedback : _updateFeedback,
         getSpeechByFixed : _getSpeechByFixed,
-        getCommentById : _getCommentById
+        getCommentById : _getCommentById,
+        logout : _logout
     };
 });
 
@@ -287,6 +297,7 @@ app.factory('initService', ['$rootScope','loginService','sessionService', functi
     return{
         init:function(){
             $rootScope.isLogged = loginService.islogged();
+            $rootScope.currentUser = sessionService.get('uid');
             return sessionService.get('uid');
         }
     };
