@@ -304,8 +304,7 @@ app.factory('initService', ['$rootScope','loginService','sessionService', functi
 }]);
 
 
-app.factory('paintService', function(httpFacade,initService, speechService,branchService){
-    var userId = initService.init();
+app.factory('paintService', function($rootScope,httpFacade, speechService,branchService){
     return{
 
 

@@ -1,8 +1,8 @@
 /**
  * Created by wangqr on 3/29/2015.
  */
-app.factory('speechService',function($http,$location,$compile,$timeout,httpFacade,initService){
-    var userId = initService.init();
+app.factory('speechService',function($http,$location,$rootScope,$compile,$timeout,httpFacade){
+
     return {
         getSpeeches : function(){
             return httpFacade.getSpeeches();
@@ -39,7 +39,7 @@ app.factory('speechService',function($http,$location,$compile,$timeout,httpFacad
             $.each(speeches, function (index, content) {
                 var flag = 0;
                 $.each(content.interests, function(i, interestContent){
-                    if(userId == interestContent.userID)
+                    if($rootScope.currentUser == interestContent.userID)
                     {
                         eval("scope.interest" + content.id + "=" + 'true');
                         flag = 1;
@@ -76,7 +76,7 @@ app.factory('speechService',function($http,$location,$compile,$timeout,httpFacad
                 if(speeches.feedbacks.length>0)
                 {
                     $.each(speeches.feedbacks, function(i, feekbackContent){
-                        if(feekbackContent.userID==userId)
+                        if(feekbackContent.userID== $rootScope.currentUser)
                         {
                             scope.feedbackByCurrentUserList.push(feekbackContent);
                             return false;
@@ -136,8 +136,8 @@ app.factory('interestService',function($http,$location,httpFacade,paintService) 
 });
 
 
-app.factory('branchService',function($http,httpFacade, initService){
-    var userId = initService.init();
+app.factory('branchService',function($rootScope){
+
     return {
 
         speechesByType: function (scope, type, response) {
@@ -166,7 +166,7 @@ app.factory('branchService',function($http,httpFacade, initService){
                                 break;
                         }
                         $.each(circleTypeContent, function (i, type) {
-                            if (type.userID == userId) {
+                            if (type.userID == $rootScope.currentUser) {
                                 lists.push(content);
                                 return false;
                             }
@@ -178,7 +178,7 @@ app.factory('branchService',function($http,httpFacade, initService){
                     switch(type){
                         case "mypulished":
                             $.each(response, function (index, content) {
-                                if(content.speakerID == userId)
+                                if(content.speakerID == $rootScope.currentUser)
                                 lists.push(content);
                             });
                             break;
