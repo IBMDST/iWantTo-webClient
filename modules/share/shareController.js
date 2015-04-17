@@ -10,6 +10,7 @@ app.controller('ShareController',['$scope','$rootScope','$compile','initService'
     switch(path){
         case "/share":
             userId = initService.init();
+            console.log(userId);
             speechService.getSpeeches().success(function (response) {
                 paintService.paint($scope,response);
                 $scope.speechesList = response;
