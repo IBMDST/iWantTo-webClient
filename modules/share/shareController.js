@@ -8,10 +8,6 @@ app.controller('ShareController',['$scope','$rootScope','$compile','initService'
     $scope.currentUser = userId;
     var path = $location.path();
 
-    feedbackService.getFeedbackByUserId(userId).success(function(response){
-        $scope.feedbackByCurrentUserList = response;
-    });
-
     switch(path){
         case "/share":
             speechService.getSpeeches().success(function (response) {

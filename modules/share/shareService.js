@@ -68,8 +68,23 @@ app.factory('speechService',function($http,$location,$compile,$timeout,httpFacad
                     }
                 });
             },300);
-        }
+        },
 
+        showFeedbackForm : function(speeches,scope){
+            scope.feedbackByCurrentUserList = [];
+            $.each(speeches, function(index, speeches){
+                if(speeches.feedbacks.length>0)
+                {
+                    $.each(speeches.feedbacks, function(i, feekbackContent){
+                        if(feekbackContent.userID==userId)
+                        {
+                            scope.feedbackByCurrentUserList.push(feekbackContent);
+                            return false;
+                        }
+                    });
+                }
+            });
+        }
     }
 });
 

@@ -20,7 +20,7 @@ app.factory('sessionService', ['$http','$rootScope', function($http,$rootScope){
 app.factory("httpFacade", function ($http) {
     var rootUrl = 'http://share.in-sync.co';
     //var rootUrl = 'http://share.in-sync.co:2403';
-    var debug = false;
+    var debug = true;
     var  _checkUser,_saveUser,_getSpeeches , _saveSpeech ,_updateSpeech , _getInterestById,_saveComment ,_deleteInterest, _saveInterest,
         _getSpeechById , _deleteComment ,_getFeedbackById,_saveFeedback,_deleteFeedback,_updateFeedback,_getSpeechByFixed
         ,_getCommentById;
@@ -295,11 +295,11 @@ app.factory('initService', ['$rootScope','loginService','sessionService', functi
 
 app.factory('paintService', function(httpFacade,initService, speechService,branchService){
     var userId = initService.init();
-    var dataUserId = { 'userID' : userId};
     return{
 
 
         paint:function(scope,speeches){
+                speechService.showFeedbackForm(speeches,scope);
                 speechService.showSpeeches(speeches,scope);
         },
 
@@ -318,8 +318,7 @@ app.factory('paintService', function(httpFacade,initService, speechService,branc
 
         paintWithFeedback:function(scope){
             httpFacade.getSpeeches().success(function(response){
-                httpFacade.getFeedbackById(dataUserId).success(function(feedbacks){
-                    scope.feedbackByCurrentUserList = feedbacks;
+                    speechService.showFeedbackForm(response,scope);
                     scope.speechesList = response;
                     speechService.showStars(response);
                     branchService.speechesByType(scope,'mypulished',response);
@@ -328,7 +327,7 @@ app.factory('paintService', function(httpFacade,initService, speechService,branc
                     branchService.speechesByType(scope,'comment',response);
                     branchService.speechesByType(scope,'interest',response);
                     branchService.speechesByType(scope,'feedback',response);
-                })
+
             });
         },
 
