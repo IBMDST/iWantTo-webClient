@@ -97,23 +97,18 @@ app.controller('ShareController',['$scope','$rootScope','$compile','initService'
     };
 
     $scope.swapInterest = function(speechId){
-        var interestID;
         var cssId = $('#'+speechId);
         if(cssId.hasClass("glyphicon glyphicon-heart")){
-            interestService.getInterestById(speechId,userId).success(function(response){
-                if(response.length>0)
-                {
-                    interestID = response[0].id;
-                }
-                interestService.deleteInterest(interestID,speechId, $scope);
-
-            });
+            var interestIdName = cssId.parent('.interests').next('.interests-overlay').children('span').children('span.interestD').attr('id');
+            if(typeof interestIdName !='undefined')
+            {
+                var interestId = interestIdName.substr('9');
+                interestService.deleteInterest(interestId,speechId, $scope);
+            }
         }
-        if(cssId.hasClass("glyphicon glyphicon-heart-empty"))
-        {
+        if(cssId.hasClass("glyphicon glyphicon-heart-empty")) {
             var data = {'userID' : userId , 'speechID' : speechId, 'createdOn' : new Date().valueOf()};
             interestService.addInterest(speechId,data, $scope);
-
         }
     };
 

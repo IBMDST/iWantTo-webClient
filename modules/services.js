@@ -18,6 +18,8 @@ app.factory('sessionService', ['$http','$rootScope', function($http,$rootScope){
 }]);
 
 app.factory("httpFacade", function ($http) {
+    var rootUrl = 'http://share.in-sync.co';
+    //var rootUrl = 'http://share.in-sync.co:2403';
     var debug = false;
     var  _checkUser,_saveUser,_getSpeeches , _saveSpeech ,_updateSpeech , _getInterestById,_saveComment ,_deleteInterest, _saveInterest,
         _getSpeechById , _deleteComment ,_getFeedbackById,_saveFeedback,_deleteFeedback,_updateFeedback,_getSpeechByFixed
@@ -298,9 +300,7 @@ app.factory('paintService', function(httpFacade,initService, speechService,branc
 
 
         paint:function(scope,speeches){
-            httpFacade.getInterestById(dataUserId).success(function(interest){
-                speechService.showSpeeches(speeches,interest,scope);
-            });
+                speechService.showSpeeches(speeches,scope);
         },
 
         paintWithComment:function(scope){

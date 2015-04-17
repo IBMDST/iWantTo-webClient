@@ -1,7 +1,8 @@
 /**
  * Created by wangqr on 3/29/2015.
  */
-app.factory('speechService',function($http,$location,$compile,$timeout,httpFacade){
+app.factory('speechService',function($http,$location,$compile,$timeout,httpFacade,initService){
+    var userId = initService.init();
     return {
         getSpeeches : function(){
             return httpFacade.getSpeeches();
@@ -34,28 +35,23 @@ app.factory('speechService',function($http,$location,$compile,$timeout,httpFacad
             })
         },
 
-        showSpeeches : function(speeches,interests,scope){
+        showSpeeches : function(speeches,scope){
             $.each(speeches, function (index, content) {
-                if(interests.length > 0)
-                {
-                    var flag = 0;
-                    $.each(interests, function (index, interestContent) {
-                        if(interestContent.speechID == content.id)
-                        {
-                            eval("scope.interest" + content.id + "=" + 'true');
-                            flag = 1;
-                            return false;
-                        }
-                    });
-                    if(flag == 0)
+                var flag = 0;
+                $.each(content.interests, function(i, interestContent){
+                    if(userId == interestContent.userID)
                     {
-                        eval("scope.interest" + content.id + "=" + 'false');
+                        eval("scope.interest" + content.id + "=" + 'true');
+                        flag = 1;
+                        return false;
                     }
-                }
-                else
+                });
+
+                if(flag == 0)
                 {
                     eval("scope.interest" + content.id + "=" + 'false');
                 }
+
             });
             this.showStars(speeches);
         },
@@ -111,7 +107,6 @@ app.factory('interestService',function($http,$location,httpFacade,paintService) 
         },
 
         deleteInterest : function(ID,speechId, scope){
-            $('#'+speechId).parent('.interests').attr('disabled','disabled');
             httpFacade.deleteInterest(ID).success(function(){
                 paintService.paintWithInterest(scope,speechId,false);
             });

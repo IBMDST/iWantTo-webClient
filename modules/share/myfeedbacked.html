@@ -28,6 +28,7 @@
                             <span ng-repeat="interest in speech.interests  | orderBy:'-createdOn'">
                                 <span ng-if="!$last">{{interest.userName + ',' }}</span>
                                 <span ng-if="$last">{{interest.userName}}</span>
+                                <span id="{{'interestD'+interest.id}}" class="interestD" ng-if="interest.userID==currentUser"></span>
                             </span>
                         </div>
                         <button type="button" class="btn btn-link" ng-if="speech.fixed" ng-click="openTab('meetinginfo',speech.id)">
