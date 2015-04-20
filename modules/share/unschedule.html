@@ -38,6 +38,9 @@
                             <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
                             {{speech.feedbacks.length}}
                         </button>
+                        <button type="button" class="btn btn-link" ng-if="speech.speakerID==currentUser" ng-click="deleteSpeech(speech.id, $event)">
+                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                        </button>
                     </div>
                 </div>
                 <div class="meetingInfo" ng-show="isOpenActiveTab('meetinginfo'+ speech.id)">

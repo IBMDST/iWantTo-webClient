@@ -1,7 +1,7 @@
 /**
  * Created by wangqr on 3/29/2015.
  */
-app.factory('speechService',function($http,$location,$rootScope,$compile,$timeout,httpFacade,initService){
+app.factory('speechService',function($http,$location,$rootScope,$compile,$timeout,httpFacade,initService,branchService){
 
     return {
         getSpeeches : function(){
@@ -128,7 +128,6 @@ app.factory('interestService',function($http,$location,httpFacade,paintService, 
 app.factory('branchService',function($rootScope){
 
     return {
-
         speechesByType: function (scope, type, response) {
             var lists = [];
             var onceType = ['comment','interest','feedback'];

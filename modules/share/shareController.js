@@ -156,7 +156,12 @@ app.controller('ShareController',['$scope','$rootScope','$compile','initService'
         }
     };
 
-
+    $scope.deleteSpeech = function(speechId, event){
+        initService.buttonDisabled(event);
+        httpFacade.deleteSpeech(speechId).success(function() {
+            paintService.paintWithComment($scope);
+        });
+    };
 
     $scope.deleteComment = function (id, event) {
         commentService.deleteComment(id,$scope,event);
