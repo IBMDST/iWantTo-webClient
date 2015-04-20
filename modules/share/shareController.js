@@ -10,7 +10,6 @@ app.controller('ShareController',['$scope','$rootScope','$compile','initService'
     switch(path){
         case "/share":
             userId = initService.init();
-            console.log(userId);
             speechService.getSpeeches().success(function (response) {
                 paintService.paint($scope,response);
                 $scope.speechesList = response;
@@ -88,7 +87,7 @@ app.controller('ShareController',['$scope','$rootScope','$compile','initService'
         }
     };
 
-    $scope.iWantToShare = function(data){
+    $scope.iWantToShare = function(data,event){
         var sendShareMessage =
         {
             'subject' : data.subject,
@@ -96,22 +95,24 @@ app.controller('ShareController',['$scope','$rootScope','$compile','initService'
             'speakerID' : userId,
             'createdOn' : new Date().valueOf()
         };
-        speechService.addSpeech(sendShareMessage,$scope);
+        speechService.addSpeech(sendShareMessage,$scope,event);
     };
 
-    $scope.swapInterest = function(speechId){
+    $scope.swapInterest = function(speechId,event){
         var cssId = $('#'+speechId);
         if(cssId.hasClass("glyphicon glyphicon-heart")){
+
             var interestIdName = cssId.parent('.interests').next('.interests-overlay').children('span').children('span.interestD').attr('id');
             if(typeof interestIdName !='undefined')
             {
                 var interestId = interestIdName.substr('9');
-                interestService.deleteInterest(interestId,speechId, $scope);
+                interestService.deleteInterest(interestId,speechId, $scope, event);
             }
         }
         if(cssId.hasClass("glyphicon glyphicon-heart-empty")) {
+
             var data = {'userID' : userId , 'speechID' : speechId, 'createdOn' : new Date().valueOf()};
-            interestService.addInterest(speechId,data, $scope);
+            interestService.addInterest(speechId,data, $scope, event);
         }
     };
 
@@ -157,11 +158,11 @@ app.controller('ShareController',['$scope','$rootScope','$compile','initService'
 
 
 
-    $scope.deleteComment = function (id) {
-        commentService.deleteComment(id,$scope);
+    $scope.deleteComment = function (id, event) {
+        commentService.deleteComment(id,$scope,event);
     };
 
-    $scope.submitComment = function(data,speechId){
+    $scope.submitComment = function(data,speechId,event){
         var sendCommentMessage =
         {
             'userID' : userId,
@@ -169,10 +170,10 @@ app.controller('ShareController',['$scope','$rootScope','$compile','initService'
             'speechID' : speechId,
             'createdOn' : new Date().valueOf()
         };
-        commentService.addComment(sendCommentMessage,$scope);
+        commentService.addComment(sendCommentMessage,$scope,event);
     };
 
-    $scope.submitFeedback = function(comment, speechId){
+    $scope.submitFeedback = function(comment, speechId,event){
         var stars = $('#feedback-comment' +speechId+'>input').val();
         if(stars=='')
         {
@@ -187,13 +188,13 @@ app.controller('ShareController',['$scope','$rootScope','$compile','initService'
                 'createdOn' : new Date().valueOf(),
                 'stars' : stars
             };
-            feedbackService.addFeedback(data,$scope);
+            feedbackService.addFeedback(data,$scope,event);
 
         }
     };
 
-    $scope.deleteFeedback = function (id) {
-        feedbackService.deleteFeedback(id,$scope);
+    $scope.deleteFeedback = function (id, event) {
+        feedbackService.deleteFeedback(id,$scope,event);
     };
 
     $scope.editFeedback = function(id) {
@@ -201,18 +202,18 @@ app.controller('ShareController',['$scope','$rootScope','$compile','initService'
         var commentNode = $('#feedback-comment' + id);
         var commentNodeText = commentNode.text();
         var input = $("<input type='text' style='width: 100%;' value='" + commentNodeText + "'/>");
-        var submit = $("<button type='button'  class='btn btn-warning btn-xs' style='margin-top:-10px;'  ng-click='updateFeedback(\""+id+"\")'>save</button>");
+        var submit = $("<button type='button'  class='btn btn-warning btn-xs' style='margin-top:-10px;'  ng-click='updateFeedback(\""+id+"\",$event)'>save</button>");
         commentNode.html(input);
         input.trigger("focus");
         $('#feedback-submit'+id).html(submit);
         $compile(submit)($scope);
     };
 
-    $scope.updateFeedback = function(id){
+    $scope.updateFeedback = function(id,event){
         var text = $('#feedback-comment' +id+'>input').val();
         var star = $('#star' + id + '>input').val();
         var data = {'comment' : text, 'stars' : star, createdOn:new Date().valueOf()};
-        feedbackService.updateFeedback(data,id,userId,$scope);
+        feedbackService.updateFeedback(data,id,userId,$scope,event);
     };
 
 
@@ -227,12 +228,12 @@ app.controller('UpdateSpeechController', function($scope,$rootScope, $routeParam
         $scope.update = {'subject' : response.subject, 'description' : response.description};
     });
 
-    $scope.updateSpeech = function(data){
+    $scope.updateSpeech = function(data,event){
         var sendMessage = {
             'subject' : data.subject,
             'description' : data.description
         };
-        speechService.updateSpeech(sendMessage,speechId);
+        speechService.updateSpeech(sendMessage,speechId,event);
     }
 });
 

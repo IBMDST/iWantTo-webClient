@@ -50,11 +50,16 @@ app.config(['$routeProvider','$locationProvider','$httpProvider',function($route
             templateUrl : 'modules/share/myfeedbacked.html',
             controller : 'ShareController'
         })
+        .when('/admin',{
+            templateUrl : 'modules/admin/admin.html',
+            controller : 'AdminController'
+        })
         .otherwise({redirectTo:'/login'})
 }]);
 
 app.run(function ($rootScope, $location, loginService) {
     var routespermission = ['/share','/iwanttoshare','/mypublished','/unschedule','/onschedule','/mycommented','/myinterested','/myfeedbacked'];
+    var adminroutespermission = ['/admin'];
     var updatePattern = /^\/mypublished\/update\//;
     var speechByIdPattern = /^\/share\//;
     $rootScope.$on('$routeChangeStart',function(){
@@ -66,12 +71,17 @@ app.run(function ($rootScope, $location, loginService) {
                 $location.path('/login');
             }
         }
+
+        if(adminroutespermission.indexOf($location.path()) !=-1 && loginService.isAdmin()==false)
+        {
+            $location.path('/login');
+        }
     });
 });
 
-app.controller('AppController',['$scope','loginService','sessionService',function ($scope,loginService,sessionService) {
+app.controller('AppController',['$scope','loginService','sessionService',function ($scope,loginService) {
     $scope.logout = function(){
-        loginService.logout(sessionService);
+        loginService.logout();
     };
 }]);
 

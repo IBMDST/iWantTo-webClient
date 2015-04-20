@@ -1,7 +1,7 @@
 /**
  * Created by wangqr on 3/29/2015.
  */
-app.factory('speechService',function($http,$location,$rootScope,$compile,$timeout,httpFacade){
+app.factory('speechService',function($http,$location,$rootScope,$compile,$timeout,httpFacade,initService){
 
     return {
         getSpeeches : function(){
@@ -13,26 +13,19 @@ app.factory('speechService',function($http,$location,$rootScope,$compile,$timeou
             return httpFacade.getSpeechById(data);
         },
 
-        updateSpeech : function(data, speechId){
-
+        updateSpeech : function(data, speechId, event){
+            initService.buttonDisabled(event);
             httpFacade.updateSpeech(data, speechId).success(function(){
                 $location.path('/mypublished');
             });
 
         },
 
-        addSpeech : function(data,scope){
+        addSpeech : function(data,scope,event){
+            initService.buttonDisabled(event);
             httpFacade.saveSpeech(data).success(function() {
                 $location.path('/share');
-            }).error(function(status){
-                    switch(status) {
-                        case 500: {
-                            $scope.message = "Something went wrong!";
-                            break;
-                        }
-                    }
-                    scope.message =  error.errors;
-            })
+            });
         },
 
         showSpeeches : function(speeches,scope){
@@ -89,31 +82,25 @@ app.factory('speechService',function($http,$location,$rootScope,$compile,$timeou
 });
 
 
-app.factory('commentService',function($http,$location,httpFacade,speechService,paintService) {
+app.factory('commentService',function($http,$location,httpFacade,speechService,paintService,initService) {
     return {
 
-        deleteComment : function(ID, scope){
+        deleteComment : function(ID, scope,event){
+            initService.buttonDisabled(event);
             httpFacade.deleteComment(ID).success(function(){
                 paintService.paintWithComment(scope);
             });
         },
-        addComment : function(data,scope) {
-            httpFacade.saveComment(data).success(function (success) {
+        addComment : function(data,scope,event) {
+            initService.buttonDisabled(event);
+            httpFacade.saveComment(data).success(function () {
                 paintService.paintWithComment(scope);
-            }).error(function(status){
-                switch(status) {
-                    case 500: {
-                        $scope.message = "Something went wrong!";
-                        break;
-                    }
-                }
-                scope.message =  error.errors;
             })
         }
     }
 });
 
-app.factory('interestService',function($http,$location,httpFacade,paintService) {
+app.factory('interestService',function($http,$location,httpFacade,paintService, initService) {
     return {
 
         getInterestById : function(speechID,id){
@@ -121,13 +108,15 @@ app.factory('interestService',function($http,$location,httpFacade,paintService) 
             return httpFacade.getInterestById(data);
         },
 
-        deleteInterest : function(ID,speechId, scope){
+        deleteInterest : function(ID,speechId, scope, event){
+            initService.buttonDisabled(event);
             httpFacade.deleteInterest(ID).success(function(){
                 paintService.paintWithInterest(scope,speechId,false);
             });
         },
 
-        addInterest : function(speechId,data,scope){
+        addInterest : function(speechId,data,scope,event){
+            initService.buttonDisabled(event);
             httpFacade.saveInterest(data).success(function(){
                 paintService.paintWithInterest(scope,speechId,true);
             });
@@ -243,24 +232,24 @@ app.factory('branchService',function($rootScope){
     }
 });
 
-app.factory('feedbackService',function($http,$location,httpFacade,paintService){
+app.factory('feedbackService',function($http,$location,httpFacade,paintService,initService){
     return {
-            addFeedback : function(data,scope){
-
+            addFeedback : function(data,scope,event){
+                initService.buttonDisabled(event);
                 httpFacade.saveFeedback(data).success(function(){
                     paintService.paintWithFeedback(scope);
                 });
             },
 
-            deleteFeedback : function(ID, scope){
-
+            deleteFeedback : function(ID, scope, event){
+                initService.buttonDisabled(event);
                 httpFacade.deleteFeedback(ID).success(function(){
                     paintService.paintWithFeedback(scope);
                 });
             },
 
-            updateFeedback : function(data,id,userId,scope){
-
+            updateFeedback : function(data,id,userId,scope,event){
+                initService.buttonDisabled(event);
                 httpFacade.updateFeedback(data,id).success(function(){
                     paintService.paintWithFeedback(scope);
                 });

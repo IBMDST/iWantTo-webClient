@@ -14,15 +14,15 @@ app.factory('sessionService', ['$http','$rootScope','httpFacade', function($http
         },
         destroy:function(key){
             $rootScope.isLogged = false;
+            $rootScope.isAdmin = false;
             httpFacade.logout();
-            $http.post(rootUrl + '/users/logout');
             return sessionStorage.removeItem(key);
         }
     };
 }]);
 
 app.factory("httpFacade", function ($http) {
-    var debug = false;
+    var debug = true  ;
     var  _checkUser,_saveUser,_getSpeeches , _saveSpeech ,_updateSpeech , _getInterestById,_saveComment ,_deleteInterest, _saveInterest,
         _getSpeechById , _deleteComment ,_getFeedbackById,_saveFeedback,_deleteFeedback,_updateFeedback,_getSpeechByFixed
         ,_getCommentById,_logout;
@@ -269,6 +269,12 @@ app.factory("httpFacade", function ($http) {
                 rootTestUrl+'speech-comments.json'
             );
         };
+
+        _logout = function(){
+            return $http.get(
+                rootTestUrl+'success.json'
+            );
+        };
     }
 
     return {
@@ -299,6 +305,14 @@ app.factory('initService', ['$rootScope','loginService','sessionService', functi
             $rootScope.isLogged = loginService.islogged();
             $rootScope.currentUser = sessionService.get('uid');
             return sessionService.get('uid');
+        },
+
+        buttonAble : function(event){
+            event.currentTarget.disabled=false;
+        },
+
+        buttonDisabled : function(event){
+            event.currentTarget.disabled=true;
         }
     };
 }]);

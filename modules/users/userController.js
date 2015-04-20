@@ -3,14 +3,14 @@
  */
 app.controller('LoginController',  ['$scope','$rootScope','loginService',function ($scope,$rootScope,loginService) {
     $rootScope.isLogged = loginService.islogged();
-    $scope.login = function(data)
+    $scope.login = function(data,event)
     {
-        loginService.login(data,$scope);
+        loginService.login(data,$scope,event);
     };
 }]);
 
 app.controller('SignupController',['$scope','signupService',function ($scope,signupService){
-    $scope.signUp = function(data){
+    $scope.signUp = function(data,event){
         var sendMessage =
         {
             'username' : data.username,
@@ -18,6 +18,6 @@ app.controller('SignupController',['$scope','signupService',function ($scope,sig
             'email' : data.email,
             'createdOn' : new Date().valueOf()
         };
-        signupService.signup(sendMessage,$scope);
+        signupService.signup(sendMessage,$scope,event);
     }
 }]);
