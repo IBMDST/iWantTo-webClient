@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="common/css/bootstrap-theme.min.css" media="screen" >
     <link rel="stylesheet" href="common/css/iwantto.css">
     <link rel="stylesheet" href="common/css/jquery.raty.css">
+
 </head>
 <body>
 <nav class="navbar navbar-inverse navbar-fixed-top" ng-controller="AppController">
@@ -22,7 +23,7 @@
             <a class="navbar-brand" href="#">I Want To</a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" ng-if="isLogged&&!isAdmin">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" ng-if="isLogged">
             <ul class="nav navbar-nav navbar-right">
                 <li><a class="btn btn-link" href="#/share">Overview</a></li>
                 <li class="dropdown">
@@ -42,12 +43,6 @@
 
                     </ul>
                 </li>
-                <li><button class="btn btn-link navbar-btn"  type="button" ng-click="logout()">Logout</button></li>
-            </ul>
-        </div><!-- /.navbar-collapse -->
-        <div class="collapse navbar-collapse"  ng-if="isLogged&&isAdmin">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a class="btn btn-link" href="#/share">Overview</a></li>
                 <li><button class="btn btn-link navbar-btn"  type="button" ng-click="logout()">Logout</button></li>
             </ul>
         </div><!-- /.navbar-collapse -->
@@ -82,7 +77,6 @@
     <script src="modules/directive.js" type="text/javascript"></script>
     <script src="modules/users/userController.js" type="text/javascript"></script>
     <script src="modules/users/userService.js" type="text/javascript"></script>
-    <script src="modules/admin/adminController.js" type="text/javascript"></script>
     <script src="modules/share/shareController.js" type="text/javascript"></script>
     <script src="modules/share/shareService.js" type="text/javascript"></script>
 </body>

@@ -1,7 +1,7 @@
 /**
  * Created by wangqr on 3/27/2015.
  */
-app.factory('loginService',function($http, $rootScope,$location, sessionService,httpFacade){
+app.factory('loginService',function($http, $location, sessionService,httpFacade){
     return{
         login : function(data,scope,event){
             event.currentTarget.disabled=true;
@@ -14,19 +14,7 @@ app.factory('loginService',function($http, $rootScope,$location, sessionService,
                 else
                 {
                     sessionService.set('uid',uid);
-                    console.log("api admin");
-                    if(success.isAdmin)
-                    {
-                        sessionService.set('isAdmin',true);
-                        $rootScope.isAdmin = true;
-                        $location.path('/admin');
-                    }
-                    else
-                    {
-                         sessionService.set('isAdmin',false);
-                         $rootScope.isAdmin = false;
-                         $location.path('/share');
-                    }
+                    $location.path('/share');
                 }
             }).error(function (errors) {
                 event.currentTarget.disabled=false;
@@ -36,7 +24,6 @@ app.factory('loginService',function($http, $rootScope,$location, sessionService,
 
         logout:function(){
             sessionService.destroy('uid');
-            sessionService.destroy('isAdmin');
             $location.path('/login');
         },
 
@@ -48,21 +35,6 @@ app.factory('loginService',function($http, $rootScope,$location, sessionService,
             }
             else
             {
-                return false;
-            }
-        },
-
-        isAdmin : function()
-        {
-
-            if(sessionService.get('isAdmin')=='true')
-            {
-                console.log('session true');
-                return true;
-            }
-            else
-            {
-                console.log('session false');
                 return false;
             }
         }
