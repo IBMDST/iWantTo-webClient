@@ -13,22 +13,40 @@
             <br>
             <form name="updateForm" role="form" novalidate>
                 <div class="row">
-                    <div class="col-sm-12">
+                    <div class="col-sm-10">
                         <label>subject<span class="text-danger">*</span></label>
                         <input  class="form-control" type="text"  name="subject"  ng-model="update.subject"  required focus rc-initial>
                     </div>
                 </div>
                 <br>
                 <div class="row">
-                    <div class="col-sm-12">
+                    <div class="col-sm-10">
                         <label>Content <span class="text-danger">*</span></label>
                         <textarea class="form-control" name="description"  rows="9" ng-model="update.description"  required></textarea>
                     </div>
                 </div>
                 <br>
                 <div class="row">
-                    <div class="col-sm-6 col-sm-offset-6 text-right">
-                        <button type="submit" class="btn btn-warning" ng-click="updateSpeech(update,$event)" ng-disabled="updateForm.$invalid">
+                    <div class="col-sm-7">
+                        <label>Location</label>
+                        <input  class="form-control" type="text"  name="location"  ng-model="update.location">
+                    </div>
+                    <div class="col-sm-3">
+                        <label>Time</label>
+                        <input id="datetimepicker"  class="form-control" type="text"  name="time"  ng-model="update.time" >
+                    </div>
+                </div>
+                <br>
+                <div  class="row">
+                    <div class="col-sm-10">
+                          <input type="checkbox"  name="fixed"  ng-model="update.fixed">  <label> Fixed </label> (Would you like anyone know meeting is already?)
+                          <small class="errorMessage text-danger" ng-show="update.fixed==true&&(update.location==null||update.time==null)">Location and time are required</small>
+
+                    </div>
+                  <br>
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-4 text-right">
+                        <button type="submit" class="btn btn-warning" ng-click="updateSpeech(update,$event)" ng-disabled="updateForm.$invalid ||(update.fixed==true&&(update.location==null||update.time==null))">
                             Save
                         </button>
                     </div>

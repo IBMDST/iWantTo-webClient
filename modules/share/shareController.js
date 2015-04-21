@@ -227,17 +227,33 @@ app.controller('ShareController',['$scope','$rootScope','$compile','initService'
 app.controller('UpdateSpeechController', function($scope,$rootScope, $routeParams, speechService, initService) {
     initService.init();
     $scope.speechById = {};
-
+    $('#datetimepicker').datetimepicker();
     var speechId =$routeParams.updateSpeechId;
     speechService.getSpeechById(speechId).success(function (response) {
         $scope.update = {'subject' : response.subject, 'description' : response.description};
     });
-
     $scope.updateSpeech = function(data,event){
+
+        var fixed = data.fixed;
+        if (typeof data.fixed =='undefined')
+        {
+            fixed=false;
+        }
         var sendMessage = {
             'subject' : data.subject,
-            'description' : data.description
+            'description' : data.description,
+            'fixed' : fixed
         };
+        if(typeof data.location !='undefined' && data.location != '')
+        {
+            sendMessage.where = data.location;
+        }
+
+        if(typeof data.time !='undefined' && data.time != '')
+        {
+            var formatMeetingTime = data.time.replace(/-/ig,'/');
+            sendMessage.when = new Date(formatMeetingTime).valueOf();
+        }
         speechService.updateSpeech(sendMessage,speechId,event);
     }
 });
