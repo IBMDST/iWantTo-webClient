@@ -88,6 +88,7 @@ app.controller('ShareController',['$scope','$rootScope','$compile','initService'
     };
 
     $scope.iWantToShare = function(data,event){
+        userId = initService.init();
         var sendShareMessage =
         {
             'subject' : data.subject,
