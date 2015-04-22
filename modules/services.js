@@ -21,7 +21,7 @@ app.factory('sessionService', ['$http','$rootScope','httpFacade', function($http
 }]);
 
 app.factory("httpFacade", function ($http) {
-    var debug = true  ;
+    var debug = false;
     var  _checkUser,_saveUser,_getSpeeches , _saveSpeech ,_updateSpeech , _getInterestById,_saveComment ,_deleteInterest, _saveInterest,
         _getSpeechById , _deleteComment ,_getFeedbackById,_saveFeedback,_deleteFeedback,_updateFeedback,_getSpeechByFixed
         ,_getCommentById,_logout,_deleteSpeech;
