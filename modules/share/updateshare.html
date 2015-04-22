@@ -33,7 +33,8 @@
                     </div>
                     <div class="col-sm-3">
                         <label>Time</label>
-                        <input id="datetimepicker"  class="form-control" type="text"  name="time"  ng-model="update.time" >
+                        <input id="datetimepicker" ng-blur="checkMeetingTime(update.time)" class="form-control" type="text"  name="time"  ng-model="update.time" >
+                        <small class="errorMessage text-danger">{{speechTime}}</small>
                     </div>
                 </div>
                 <br>
@@ -46,7 +47,7 @@
                   <br>
                 <div class="row">
                     <div class="col-sm-6 col-sm-offset-4 text-right">
-                        <button type="submit" class="btn btn-warning" ng-click="updateSpeech(update,$event)" ng-disabled="updateForm.$invalid ||(update.fixed==true&&(update.location==null||update.time==null))">
+                        <button type="submit" class="btn btn-warning meeting-time" ng-click="updateSpeech(update,$event)" ng-disabled="updateForm.$invalid ||(update.fixed==true&&(update.location==null||update.time==null))">
                             Save
                         </button>
                     </div>

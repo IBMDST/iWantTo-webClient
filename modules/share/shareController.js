@@ -1,7 +1,7 @@
 /**
  * Created by wangqr on 3/28/2015.
  */
-app.controller('ShareController',['$scope','$rootScope','$compile','initService','loginService','speechService','branchService','interestService','commentService','feedbackService','$location','paintService','httpFacade',function($scope,$rootScope, $compile,initService,loginService,speechService,branchService,interestService,commentService,feedbackService,$location,paintService,httpFacade){
+app.controller('ShareController',['$scope','$rootScope','$http','$compile','initService','loginService','speechService','branchService','interestService','commentService','feedbackService','$location','paintService','httpFacade',function($scope,$rootScope,$http, $compile,initService,loginService,speechService,branchService,interestService,commentService,feedbackService,$location,paintService,httpFacade){
     $scope.speechesList = [];
     $scope.feedbackByCurrentUserList = [];
     var userId ;
@@ -158,9 +158,12 @@ app.controller('ShareController',['$scope','$rootScope','$compile','initService'
     };
 
     $scope.deleteSpeech = function(speechId, event){
-        initService.buttonDisabled(event);
-        httpFacade.deleteSpeech(speechId).success(function() {
-            paintService.paintWithComment($scope);
+        initService.confirmAlert( function(){
+            initService.buttonDisabled(event);
+            httpFacade.deleteSpeech(speechId).success(function() {
+                paintService.paintWithComment($scope);
+                swal("This has been deleted!");
+            });
         });
     };
 
@@ -183,7 +186,7 @@ app.controller('ShareController',['$scope','$rootScope','$compile','initService'
         var stars = $('#feedback-comment' +speechId+'>input').val();
         if(stars=='')
         {
-            alert('Stars is required');
+            swal("Give us a star")
         }
         else
         {
@@ -227,15 +230,36 @@ app.controller('ShareController',['$scope','$rootScope','$compile','initService'
 
 app.controller('UpdateSpeechController', function($scope,$rootScope, $routeParams, speechService, initService) {
     initService.init();
-    $scope.speechById = {};
     $('#datetimepicker').datetimepicker();
     var speechId =$routeParams.updateSpeechId;
     speechService.getSpeechById(speechId).success(function (response) {
         $scope.update = {'subject' : response.subject, 'description' : response.description};
     });
-    $scope.updateSpeech = function(data,event){
 
+    $scope.checkMeetingTime = function(time){
+        if(time=='')
+        {
+            return false;
+        }
+        var currentTime = new Date().valueOf();
+        var formatMeetingTime = time.replace(/-/ig,'/');
+        var userTime = new Date(formatMeetingTime).valueOf();
+        if(userTime<=currentTime)
+        {
+            $scope.speechTime = 'please check time';
+            $('.meeting-time').attr('disabled','disabled');
+        }
+        else
+        {
+            $scope.speechTime = '';
+            $('.meeting-time').removeAttr("disabled");
+        }
+    };
+
+    $scope.updateSpeech = function(data,event){
+        var currentTime = new Date().valueOf();
         var fixed = data.fixed;
+        $scope.speechTime = '';
         if (typeof data.fixed =='undefined')
         {
             fixed=false;
@@ -254,7 +278,12 @@ app.controller('UpdateSpeechController', function($scope,$rootScope, $routeParam
         {
             var formatMeetingTime = data.time.replace(/-/ig,'/');
             sendMessage.when = new Date(formatMeetingTime).valueOf();
+            if(sendMessage.when <=currentTime)
+            {
+                return false;
+            }
         }
+
         speechService.updateSpeech(sendMessage,speechId,event);
     }
 });

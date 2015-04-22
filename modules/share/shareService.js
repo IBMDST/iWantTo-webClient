@@ -86,11 +86,15 @@ app.factory('commentService',function($http,$location,httpFacade,speechService,p
     return {
 
         deleteComment : function(ID, scope,event){
-            initService.buttonDisabled(event);
-            httpFacade.deleteComment(ID).success(function(){
-                paintService.paintWithComment(scope);
+            initService.confirmAlert( function(){
+                initService.buttonDisabled(event);
+                httpFacade.deleteComment(ID).success(function(){
+                    paintService.paintWithComment(scope);
+                    swal("This has been deleted!");
+                });
             });
         },
+
         addComment : function(data,scope,event) {
             initService.buttonDisabled(event);
             httpFacade.saveComment(data).success(function () {
@@ -241,9 +245,15 @@ app.factory('feedbackService',function($http,$location,httpFacade,paintService,i
             },
 
             deleteFeedback : function(ID, scope, event){
-                initService.buttonDisabled(event);
                 httpFacade.deleteFeedback(ID).success(function(){
                     paintService.paintWithFeedback(scope);
+                });
+                initService.confirmAlert( function(){
+                    initService.buttonDisabled(event);
+                    httpFacade.deleteFeedback(ID).success(function(){
+                        paintService.paintWithFeedback(scope);
+                        swal("This has been deleted!");
+                    });
                 });
             },
 
