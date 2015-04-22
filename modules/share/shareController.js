@@ -232,9 +232,21 @@ app.controller('UpdateSpeechController', function($scope,$rootScope, $routeParam
     initService.init();
     $('#datetimepicker').datetimepicker();
     var speechId =$routeParams.updateSpeechId;
+    var formatTime = '';
     speechService.getSpeechById(speechId).success(function (response) {
-        $scope.update = {'subject' : response.subject, 'description' : response.description};
+        if(response.when!='')
+        {
+            formatTime= new Date(parseInt(response.when)*1000).format("yy-MM-dd hh:mm");
+        }
+
+        $scope.update = {
+            'subject' : response.subject,
+            'description' : response.description,
+            'location':response.where,
+            'time':formatTime
+        };
     });
+
 
     $scope.checkMeetingTime = function(time){
         if(time=='')
@@ -283,7 +295,6 @@ app.controller('UpdateSpeechController', function($scope,$rootScope, $routeParam
                 return false;
             }
         }
-
         speechService.updateSpeech(sendMessage,speechId,event);
     }
 });

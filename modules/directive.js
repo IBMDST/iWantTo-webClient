@@ -13,18 +13,3 @@ app.directive('isLogged', function() {
 });
 
 
-var appForm = angular.module('updateForm', []);
-appForm.directive('rcInitial', function() {
-    return {
-        restrict: 'A',
-        controller: [
-            '$scope', '$element', '$attrs', '$parse', function($scope, $element, $attrs, $parse) {
-                var getter, setter, val;
-                val = $attrs.ngInitial || $attrs.value;
-                getter = $parse($attrs.ngModel);
-                setter = getter.assign;
-                setter($scope, val);
-            }
-        ]
-    };
-});

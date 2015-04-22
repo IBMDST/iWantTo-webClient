@@ -32,7 +32,7 @@
                             </span>
                         </div>
                         <button type="button" class="btn btn-link" ng-if="speech.fixed" ng-click="openTab('meetinginfo',speech.id)">
-                           <span class="glyphicon glyphicon-blackboard" aria-hidden="true"></span>
+                            <span class="glyphicon glyphicon-blackboard" aria-hidden="true"></span>
                         </button>
                         <button type="button" class="btn btn-link" ng-if="speech.fixed" ng-click="openTab('feedback',speech.id)">
                             <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
@@ -45,7 +45,7 @@
                 </div>
                 <div class="meetingInfo" ng-show="isOpenActiveTab('meetinginfo'+ speech.id)">
                     <span class="glyphicon glyphicon-user" aria-hidden="true"></span> <strong>Speaker Name : </strong>{{speech.speakerName}}<br>
-                    <span class="glyphicon glyphicon-time" aria-hidden="true"></span> <strong>Meeting Time : </strong>{{speech.when}}  <br>
+                    <span class="glyphicon glyphicon-time" aria-hidden="true"></span> <strong>Meeting Time : </strong>{{speech.when | date:'yyyy-MM-dd  HH:mm'}}  <br>
                     <span class="glyphicon glyphicon-home" aria-hidden="true"></span> <strong>Meeting Location : </strong>{{speech.where}}
                     <div class="speech-line"></div>
                 </div>
