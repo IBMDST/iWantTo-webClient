@@ -14,7 +14,7 @@
             <div ng-repeat="speech in myfeedbackedSpeechesList | orderBy:'-createdOn'">
                 <h3>{{speech.subject}}</h3>
                 <p>{{speech.description}}</p>
-                <div class="share-time">{{speech.createdOn | date:'yyyy-MM-dd  HH:mm'}} comes from <strong>{{speech.speakerName}}</strong>
+                <div class="share-time">{{speech.createdOn * 1000| date:'yyyy-MM-dd  HH:mm'}} comes from <strong>{{speech.speakerName}}</strong>
                 </div>
                 <div class="row">
                     <div class="col-md-3 col-md-offset-9 btn-group btn-group-xs speech-bar" role="group" aria-label="...">
@@ -45,7 +45,7 @@
                 </div>
                 <div class="meetingInfo" ng-show="isOpenActiveTab('meetinginfo'+ speech.id)">
                     <span class="glyphicon glyphicon-user" aria-hidden="true"></span> <strong>Speaker Name : </strong>{{speech.speakerName}}<br>
-                    <span class="glyphicon glyphicon-time" aria-hidden="true"></span> <strong>Meeting Time : </strong>{{speech.when | date:'yyyy-MM-dd  HH:mm'}}  <br>
+                    <span class="glyphicon glyphicon-time" aria-hidden="true"></span> <strong>Meeting Time : </strong>{{speech.when * 1000 | date:'yyyy-MM-dd  HH:mm'}}  <br>
                     <span class="glyphicon glyphicon-home" aria-hidden="true"></span> <strong>Meeting Location : </strong>{{speech.where}}
                     <div class="speech-line"></div>
                 </div>
@@ -60,7 +60,7 @@
                         <p class="comment-font"><strong>{{comment.userName}} :</strong> {{comment.comment}}
                             <br>
                             <span class="comment-time-font">
-                                {{comment.createdOn | date:'yyyy-MM-dd  HH:mm'}}
+                                {{comment.createdOn * 1000 | date:'yyyy-MM-dd  HH:mm'}}
                             </span>
                             <button type="button" ng-click="deleteComment(comment.id, $event)" class="btn btn-link btn-xs pull-right" aria-label="remove" ng-if="comment.userID==currentUser" >
                                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
@@ -85,7 +85,7 @@
                         <div id="{{'star'+ feedback.id}}"></div>
                         <div class="row">
                             <span class="col-md-5 comment-time-font">
-                                {{feedback.createdOn | date:'yyyy-MM-dd  HH:mm'}}
+                                {{feedback.createdOn * 1000 | date:'yyyy-MM-dd  HH:mm'}}
                             </span>
                             <div id="{{'feedback-submit' + feedback.id}}" class="col-md-2 col-md-offset-5 btn-group btn-group-xs" role="group"  ng-if="feedback.userID==currentUser">
                                 <button type="button" ng-click="editFeedback(feedback.id)" class="btn btn-link"  >
