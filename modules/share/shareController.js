@@ -236,7 +236,7 @@ app.controller('UpdateSpeechController', function($scope,$rootScope, $routeParam
     speechService.getSpeechById(speechId).success(function (response) {
         if(response.when!=null)
         {
-            formatTime= new Date(parseInt(response.when)*1000).format("yy-MM-dd hh:mm");
+            formatTime= new Date(parseInt(response.when)*1000).format("yyyy/MM/dd hh:mm");
         }
 
         $scope.update = {
