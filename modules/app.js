@@ -1,4 +1,4 @@
-var app = angular.module('shareApp',['ngRoute']);
+var app = angular.module('shareApp',['ngRoute','textAngular']);
 app.config(['$routeProvider','$locationProvider','$httpProvider',function($routeProvider,$locationProvider,$httpProvider){
     $locationProvider.html5Mode(false);
     $httpProvider.defaults.useXDomain = true;

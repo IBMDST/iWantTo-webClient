@@ -13,7 +13,7 @@
             {{onscheduledmessage}}
             <div ng-repeat="speech in scheduledSpeechesList | orderBy:'-createdOn'">
                 <h3>{{speech.subject}}</h3>
-                <p>{{speech.description}}</p>
+                <div ng-bind-html='speech.description'></div>
                 <div class="share-time">{{speech.createdOn * 1000| date:'yyyy-MM-dd  HH:mm'}} comes from <strong>{{speech.speakerName}}</strong>
                 </div>
                 <div class="row">

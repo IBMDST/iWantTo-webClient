@@ -243,7 +243,8 @@ app.controller('UpdateSpeechController', function($scope,$rootScope, $routeParam
             'subject' : response.subject,
             'description' : response.description,
             'location':response.where,
-            'time':formatTime
+            'time':formatTime,
+            'fixed':response.fixed
         };
     });
 
