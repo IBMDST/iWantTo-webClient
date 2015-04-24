@@ -40,8 +40,8 @@
                 <br>
                 <div  class="row">
                     <div class="col-sm-10">
-                          <input  type="checkbox"  name="fixed"  ng-model="update.fixed" ng-checked="update.fixed">  <label> Fixed </label> (Would you like anyone know meeting is already?)
-                          <small class="errorMessage text-danger" ng-show="update.fixed==true&&(update.location==null||update.time==null)">Location and time are required</small>
+                          <input  type="checkbox"  name="fixed"  ng-model="update.fixed">  <label> Fixed </label> (Would you like anyone know meeting is already?)
+                          <small class="errorMessage text-danger" ng-show="update.fixed==true&&(update.location==null||update.location==''||update.time==null)">Location and time are required</small>
 
                     </div>
                   <br>
