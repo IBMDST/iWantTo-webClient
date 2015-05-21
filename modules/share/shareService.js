@@ -190,44 +190,44 @@ app.factory('branchService',function($rootScope){
                 }
                 switch(type){
                     case "comment":
-                        lists.length > 0 ? scope.mycommentedSpeechesList = lists : scope.commentedmessage = "No speech on comment";
+                        lists.length > 0 ? scope.mycommentedSpeechesList = lists : scope.commentedmessage = "抱歉，目前没有您评论过的培训";
                         break;
                     case "interest":
-                        lists.length > 0 ? scope.myinterestedSpeechesList = lists : scope.interestedmessage = "No speech on interest";
+                        lists.length > 0 ? scope.myinterestedSpeechesList = lists : scope.interestedmessage = "抱歉，目前没有您感兴趣的培训";
                         break;
                     case "feedback":
-                        lists.length > 0 ? scope.myfeedbackedSpeechesList = lists : scope.feedbackedmessage = "No speech on feedback";
+                        lists.length > 0 ? scope.myfeedbackedSpeechesList = lists : scope.feedbackedmessage = "抱歉，目前没有您参加过的培训";
                         break;
                     case "mypulished":
-                        lists.length > 0 ? scope.mySpeechesList = lists : scope.mypublishededmessage = "No speech on publish";
+                        lists.length > 0 ? scope.mySpeechesList = lists : scope.mypublishededmessage = "抱歉，目前没有您发起的培训";
                         break;
                     case "unschedule":
-                        lists.length > 0 ? scope.unscheduledSpeechesList = lists : scope.unscheduledmessage = "No speech on unschedule";
+                        lists.length > 0 ? scope.unscheduledSpeechesList = lists : scope.unscheduledmessage = "抱歉，目前没有未上线的培训";
                         break;
                     case "onschedule":
-                        lists.length > 0 ? scope.scheduledSpeechesList = lists : scope.onscheduledmessage = "No speech on onschedule";
+                        lists.length > 0 ? scope.scheduledSpeechesList = lists : scope.onscheduledmessage = "抱歉，目前没有已上线的培训";
                         break;
                 }
             }
             else{
                 switch(type){
                     case "comment":
-                        scope.commentedmessage = "No speech on comment";
+                        scope.commentedmessage = "抱歉，目前没有您评论过的培训";
                         break;
                     case "interest":
-                        scope.interestedmessage = "No speech on interest";
+                        scope.interestedmessage = "抱歉，目前没有您感兴趣的培训";
                          break;
                     case "feedback":
-                        scope.feedbackedmessage = "No speech on feedback";
+                        scope.feedbackedmessage = "抱歉，目前没有您参加过的培训";
                           break;
                     case "mypulished":
-                        scope.mypublishededmessage = "No speech on mpublish";
+                        scope.mypublishededmessage = "抱歉，目前没有您发起的培训";
                         break;
                     case "unschedule":
-                        scope.unscheduledmessage = "No speech on unschedule";
+                        scope.unscheduledmessage = "抱歉，目前没有未上线的培训";
                         break;
                     case "onschedule":
-                        scope.onscheduledmessage = "No speech on onschedule";
+                        scope.onscheduledmessage = "抱歉，目前没有已上线的培训";
                         break;
                 }
             }
@@ -252,7 +252,7 @@ app.factory('feedbackService',function($http,$location,httpFacade,paintService,i
                     initService.buttonDisabled(event);
                     httpFacade.deleteFeedback(ID).success(function(){
                         paintService.paintWithFeedback(scope);
-                        swal("This has been deleted!");
+                        swal("删除成功！");
                     });
                 });
             },

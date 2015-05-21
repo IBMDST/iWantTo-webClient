@@ -2,7 +2,7 @@
 <html ng-app="shareApp">
 <head lang="en">
     <meta charset="UTF-8">
-    <title>I Want To</title>
+    <title>I Want To Share</title>
     <link rel="stylesheet" href="common/css/bootstrap.min.css">
     <link rel="stylesheet" href="common/css/bootstrap-theme.min.css" media="screen" >
     <link rel="stylesheet" href="common/css/iwantto.css">
@@ -23,30 +23,30 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">I Want To</a>
+            <a class="navbar-brand" href="#">I Want To Share</a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" ng-if="isLogged">
             <ul class="nav navbar-nav navbar-right">
-                <li><a class="btn btn-link" href="#/share">Overview</a></li>
+                <li><a class="btn btn-link" href="#/share">首页</a></li>
                 <li class="dropdown">
-                    <button class="btn btn-link navbar-btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">Schedule <span class="caret"></span></button>
+                    <button class="btn btn-link navbar-btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">分享 <span class="caret"></span></button>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="#/unschedule">Unschedule</a></li>
-                        <li><a href="#/onschedule">Schedule</a></li>
+                        <li><a href="#/unschedule">未发起的分享</a></li>
+                        <li><a href="#/onschedule">已发起的分享</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <button class="btn btn-link navbar-btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">My Share <span class="caret"></span></button>
+                    <button class="btn btn-link navbar-btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">我的分享<span class="caret"></span></button>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="#/mypublished">My published Speech</a></li>
-                        <li><a href="#/mycommented">My commented Speech</a></li>
-                        <li><a href="#/myinterested">My interested Speech</a></li>
-                        <li><a href="#/myfeedbacked">My feedbacked Speech</a></li>
+                        <li><a href="#/mypublished">我发起的分享</a></li>
+                        <li><a href="#/mycommented">我评论的分享</a></li>
+                        <li><a href="#/myinterested">我感兴趣的分享</a></li>
+                        <li><a href="#/myfeedbacked">我参加的分享</a></li>
 
                     </ul>
                 </li>
-                <li><button class="btn btn-link navbar-btn"  type="button" ng-click="logout()">Logout</button></li>
+                <li><button class="btn btn-link navbar-btn"  type="button" ng-click="logout()">退出</button></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->

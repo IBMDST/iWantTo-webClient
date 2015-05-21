@@ -2,35 +2,37 @@
     <div class="row">
         <article class="col-xs-12 maincontent">
             <header class="page-header">
-                <h1 class="page-title">Registration</h1>
+                <!--- <h1 class="page-title">我们相信每个人都有自己的专长</h1> --->
+                <img src="common/images/title.png">
             </header>
             <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <h3 class="thin text-center">Register a new account</h3>
-                        <p class="text-center text-muted"> Already have an account? <a href="#/login">Sign In</a></p>
+                        <!--<h3 class="thin text-center">登录</h3>-->
+                        <img src="common/images/title2.png">
+                        <p class="text-center text-muted">已有账号，<a href="#/login">直接登录</a></p>
                         <hr>
                         <form name="signupForm" role="form" novalidate>
                             <div class="top-margin">
-                                <label>Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" placeholder="Enter name" ng-model="signup.username" name="name" required focus>
-                                <small ng-show="signupForm.name.$invalid && !signupForm.name.$pristine" class="help-inline text-danger">Your name is required.</small>
+                                <label>用户名 <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" placeholder="请输入用户名" ng-model="signup.username" name="name" required focus>
+                                <small ng-show="signupForm.name.$invalid && !signupForm.name.$pristine" class="help-inline text-danger">请输入用户名</small>
                             </div>
                             <div class="top-margin">
-                                <label>Email Address <span class="text-danger">*</span></label>
-                                <input type="email" class="form-control" placeholder="Email" name="email" ng-model="signup.email" required/>
-                                <small ng-show="signupForm.email.$error.email" class="help-inline text-danger">Email is not valid</small>
+                                <label>邮箱 <span class="text-danger">*</span></label>
+                                <input type="email" class="form-control" placeholder="请输入邮箱地址" name="email" ng-model="signup.email" required/>
+                                <small ng-show="signupForm.email.$error.email" class="help-inline text-danger">请输入正确的邮箱地址</small>
                             </div>
 
                             <div class="row top-margin">
                                 <div class="col-sm-6">
-                                    <label>Password <span class="text-danger">*</span></label>
-                                    <input type="password" class="form-control" name = "password" placeholder="Password" ng-model="signup.password" required/>
+                                    <label>密码 <span class="text-danger">*</span></label>
+                                    <input type="password" class="form-control" name = "password" placeholder="请输入密码" ng-model="signup.password" required/>
                                 </div>
                                 <div class="col-sm-6">
-                                    <label>Confirm Password <span class="text-danger">*</span></label>
-                                    <input type="password" class="form-control" name="password2" placeholder="Password Again" ng-model="signup.password2" required/>
-                                    <small class="errorMessage text-danger" ng-show="signupForm.password.$dirty&&signupForm.password2.$dirty&&signup.password!==signup.password2"> Password do not match.</small>
+                                    <label>确认密码 <span class="text-danger">*</span></label>
+                                    <input type="password" class="form-control" name="password2" placeholder="请再次确认密码" ng-model="signup.password2" required/>
+                                    <small class="errorMessage text-danger" ng-show="signupForm.password.$dirty&&signupForm.password2.$dirty&&signup.password!==signup.password2">密码不一致</small>
                                 </div>
                             </div>
                             <hr>
@@ -40,7 +42,7 @@
                                 </div>
                                 <div class="col-lg-4 text-right">
                                     <button type="submit" class="btn btn-warning" ng-click="signUp(signup,$event)" ng-disabled="signupForm.$invalid">
-                                        Register
+                                        立即注册
                                     </button>
                                 </div>
                             </div>

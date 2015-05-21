@@ -9,7 +9,7 @@ app.factory('loginService',function($http, $location, sessionService,httpFacade)
                 var uid = success.uid;
                 if(typeof uid == 'undefined')
                 {
-                    scope.loginError = 'Not login successfully';
+                    scope.loginError = '登录失败';
                 }
                 else
                 {

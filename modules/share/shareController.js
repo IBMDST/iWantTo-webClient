@@ -162,7 +162,7 @@ app.controller('ShareController',['$scope','$rootScope','$http','$compile','init
             initService.buttonDisabled(event);
             httpFacade.deleteSpeech(speechId).success(function() {
                 paintService.paintWithComment($scope);
-                swal("This has been deleted!");
+                swal("删除成功！");
             });
         });
     };
@@ -259,7 +259,7 @@ app.controller('UpdateSpeechController', function($scope,$rootScope, $routeParam
         var userTime = new Date(formatMeetingTime).valueOf();
         if(userTime<=currentTime)
         {
-            $scope.speechTime = 'please check time';
+            $scope.speechTime = '请输入正确的时间';
             $('.meeting-time').attr('disabled','disabled');
         }
         else

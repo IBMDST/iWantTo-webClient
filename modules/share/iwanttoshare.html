@@ -3,24 +3,24 @@
         <!-- Article main content -->
         <article class="col-sm-12 maincontent">
             <header class="page-header">
-                <h1 class="page-title">I want to Share</h1>
+                <h1 class="page-title">我想分享</h1>
             </header>
             <p>
-                What you want to share? Fill out the form below with some info.
+                我们相信每个人都有自己的专长
             </p>
             <br>
             <form name="shareForm" role="form" novalidate>
                 <div class="row">
                     <div class="col-sm-12">
-                        <label>Subject <span class="text-danger">*</span></label>
-                        <input  class="form-control" type="text" placeholder="Subject" name="subject" ng-model="share.subject" required focus>
+                        <label>标题 <span class="text-danger">*</span></label>
+                        <input  class="form-control" type="text" placeholder="请输入标题" name="subject" ng-model="share.subject" required focus>
                     </div>
                 </div>
                 <br>
                 <div class="row">
                     <div class="col-sm-12">
-                        <label>Description <span class="text-danger">*</span></label>
-                        <div required text-angular ng-model="share.description" placeholder="Description"></div>
+                        <label>内容 <span class="text-danger">*</span></label>
+                        <div required text-angular ng-model="share.description" placeholder="请输入内容"></div>
                     </div>
                 </div>
                 <br>
@@ -29,7 +29,7 @@
                     </div>
                     <div class="col-sm-6 text-right">
                         <button type="submit" class="btn btn-warning" ng-click="iWantToShare(share,$event)" ng-disabled="shareForm.$invalid">
-                            Submit
+                            立即发表
                         </button>
                     </div>
                     {{iWantToShareFailtext}}

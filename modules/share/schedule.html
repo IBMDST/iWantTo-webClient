@@ -5,16 +5,16 @@
         <!-- Article main content -->
         <article class="col-md-12 maincontent">
             <header class="page-header">
-                <h1 class="page-title">Schedule Speech
-                    <a class="btn btn-primary pull-right" href="#/iwanttoshare">I want to Share</a>
+                <h1 class="page-title">已发起的分享
+                    <a class="btn btn-primary pull-right" href="#/iwanttoshare">我想分享</a>
                 </h1>
-                <p>Here is a place...</p>
+                <p>我为人人，人人为我</p>
             </header>
             {{onscheduledmessage}}
             <div ng-repeat="speech in scheduledSpeechesList | orderBy:'-createdOn'">
                 <h3>{{speech.subject}}</h3>
                 <div ng-bind-html='speech.description'></div>
-                <div class="share-time">{{speech.createdOn * 1000| date:'yyyy-MM-dd  HH:mm'}} comes from <strong>{{speech.speakerName}}</strong>
+                <div class="share-time">{{speech.createdOn * 1000| date:'yyyy-MM-dd  HH:mm'}} 来自 <strong>{{speech.speakerName}}</strong>
                 </div>
                 <div class="row">
                     <div class="col-md-3 col-md-offset-9 btn-group btn-group-xs speech-bar" role="group" aria-label="...">
@@ -44,16 +44,16 @@
                     </div>
                 </div>
                 <div class="meetingInfo" ng-show="isOpenActiveTab('meetinginfo'+ speech.id)">
-                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span> <strong>Speaker Name : </strong>{{speech.speakerName}}<br>
-                    <span class="glyphicon glyphicon-time" aria-hidden="true"></span> <strong>Meeting Time : </strong>{{speech.when * 1000  | date:'yyyy-MM-dd  HH:mm'}}  <br>
-                    <span class="glyphicon glyphicon-home" aria-hidden="true"></span> <strong>Meeting Location : </strong>{{speech.where}}
+                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span> <strong>分享人 : </strong>{{speech.speakerName}}<br>
+                    <span class="glyphicon glyphicon-time" aria-hidden="true"></span> <strong>分享时间 : </strong>{{speech.when * 1000 | date:'yyyy-MM-dd  HH:mm'}}  <br>
+                    <span class="glyphicon glyphicon-home" aria-hidden="true"></span> <strong>地点 : </strong>{{speech.where}}
                     <div class="speech-line"></div>
                 </div>
                 <div class="comment" id="{{'comments'+ speech.id}}" ng-show="isOpenActiveTab('comment'+speech.id)">
                     <form role="form" name="commentForm" novalidate>
-                        <textarea placeholder="I'd like to say..." ng-model="comment"  class="form-control comment-textarea" name="comment" rows="2" required></textarea>
+                        <textarea placeholder="我想说..." ng-model="comment"  class="form-control comment-textarea" name="comment" rows="2" required></textarea>
                         <div class="col-sm-1 col-sm-offset-11">
-                            <button class="btn btn-warning btn-xs" type="submit" ng-click="submitComment(comment,speech.id,$event)" ng-disabled="commentForm.$invalid">Comment</button>
+                            <button class="btn btn-warning btn-xs" type="submit" ng-click="submitComment(comment,speech.id,$event)" ng-disabled="commentForm.$invalid">保存</button>
                         </div>
                     </form>
                     <div ng-repeat="comment in speech.comments  | orderBy:'-createdOn'">
@@ -71,11 +71,11 @@
                 </div>
                 <div class="feedback" id="{{'feedbacks'+ speech.id}}" ng-show="isOpenActiveTab('feedback'+speech.id)">
                     <form role="form" id="{{'feedback-form'+ speech.id}}" name="feedbackForm" ng-if="display(speech.id)" novalidate>
-                        <textarea placeholder="I'd like to say..." ng-model="feedbackComment"  class="form-control comment-textarea" name="comment" rows="2" ></textarea>
+                        <textarea placeholder="我想说..." ng-model="feedbackComment"  class="form-control comment-textarea" name="comment" rows="2" ></textarea>
                         <div class="row star-bar">
-                            <div id={{'feedback-comment'+speech.id}} class="col-sm-5 stars"> Do you like it? </div>
+                            <div id={{'feedback-comment'+speech.id}} class="col-sm-5 stars"> 请对这次分享评分 </div>
                             <div class="col-sm-1  col-sm-offset-6">
-                                <button class="btn btn-warning btn-xs" type="submit" ng-click="submitFeedback(feedbackComment,speech.id,$event)">Save</button>
+                                <button class="btn btn-warning btn-xs" type="submit" ng-click="submitFeedback(feedbackComment,speech.id,$event)">保存</button>
                             </div>
                         </div>
                     </form>
